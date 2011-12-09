@@ -19,7 +19,6 @@ public class Identifier implements Comparable<Identifier> {
 		this.id = id.trim().toUpperCase();
 	}
 	
-	
 	@Override
 	public boolean equals(Object o){
 		if (o == null || !(o instanceof Identifier)) {
