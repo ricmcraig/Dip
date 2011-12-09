@@ -11,6 +11,9 @@ import map.Province;
 
 public class Mapper {
 
+	private static final String ALIASES_REGEX = "\\(.*?\\)";
+	private static final String NEIGHBOURS_REGEX = "\\(.*?[^\\(]..\\)";
+
 	private File mapFile;
 	
 	public Mapper(File mapFile){
@@ -27,7 +30,6 @@ public class Mapper {
 		this.mapFile = mapFile;
 		checkFile();
 	}
-
 	
 	public void constructMap(DipMap dipMap){
 		Scanner lineScanner = null;
@@ -45,12 +47,11 @@ public class Mapper {
 				lineScanner.useDelimiter(",");
 				province.setIdentifier(lineScanner.next());
 				province.setType(lineScanner.next());
-				province.setHasSupplyCentre(lineScanner.next());
+				province.setSupply(lineScanner.next());
 				province.setOwner(lineScanner.next());
 				province.setFullName(lineScanner.next());
-				province.setAliases(lineScanner.findInLine("\\(.*?\\)"));
-				System.out.println("Getting neighbours for " + province.getIdentifier());
-				province.setNeighbours(lineScanner.findInLine("\\(.*?[^\\(]..\\)"));
+				province.setAliases(lineScanner.findInLine(ALIASES_REGEX));
+				province.setNeighbours(lineScanner.findInLine(NEIGHBOURS_REGEX));
 				dipMap.addProvince(province);
 			}
 		}
