@@ -53,14 +53,14 @@ public class NeighboursTest {
 	public void formatsCorrectlyAsString() {
 		final String TO_STRING = "ABC, DEF, GHI, JKL";   
 		Neighbours n = new Neighbours("(ABC, DEF, GHI, JKL)");
-		assertEquals("Show print as comma-and-space separated list of identifiers", TO_STRING, n.toString());
+		assertEquals("String representation is comma-and-space separated list of identifiers", TO_STRING, n.toString());
 	}
 
 	@Test
 	public void formatsAlphabeticallyAsString() {
 		final String TO_STRING = "ABC, DEF, GHI, JKL";   
 		Neighbours n = new Neighbours("(JKL, DEF, ABC, GHI)");
-		assertEquals("Show print as comma-and-space separated list of identifiers", TO_STRING, n.toString());
+		assertEquals("String representation lists identifiers in natural order", TO_STRING, n.toString());
 	}
 
 }
