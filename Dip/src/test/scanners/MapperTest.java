@@ -21,20 +21,21 @@ public class MapperTest {
 		DipMap dipMap = new DipMap();
 		mapper.constructMap(dipMap);
 		dipMap.resolveLandTypes();
-		assertEquals("Check sea provinces",STANDARD_MAP_SEA_PROVINCES_NUMBER,dipMap.getSeaProvinces().size());
-		assertEquals("Check inland provinces",STANDARD_MAP_INLAND_PROVINCES_NUMBER,dipMap.getInlandProvinces().size());
-		assertEquals("Check coastal provinces",STANDARD_MAP_COASTAL_PROVINCES_NUMBER, dipMap.getCoastalProvinces().size());
+		assertEquals("Check sea provinces",STANDARD_MAP_SEA_PROVINCES_NUMBER,dipMap.getSeaProvincesCopy().size());
+		assertEquals("Check inland provinces",STANDARD_MAP_INLAND_PROVINCES_NUMBER,dipMap.getInlandProvincesCopy().size());
+		assertEquals("Check coastal provinces",STANDARD_MAP_COASTAL_PROVINCES_NUMBER, dipMap.getCoastalProvincesCopy().size());
 	}
 
 	@Test
+	// Regression test following problem corrected in /Dip/mapstest/standardtest.dip
 	public void testSpainCoastal() {
 		Mapper mapper = new Mapper(SPAIN_COASTAL_MAP_FILENAME);
 		DipMap dipMap = new DipMap();
 		mapper.constructMap(dipMap);
 		dipMap.resolveLandTypes();
-		assertEquals("Check sea provinces",STANDARD_MAP_SEA_PROVINCES_NUMBER,dipMap.getSeaProvinces().size());
-		assertEquals("Check inland provinces", 0, dipMap.getInlandProvinces().size());
-		assertEquals("Check coastal provinces", 1, dipMap.getCoastalProvinces().size());
+		assertEquals("Check sea provinces",STANDARD_MAP_SEA_PROVINCES_NUMBER,dipMap.getSeaProvincesCopy().size());
+		assertEquals("Check inland provinces", 0, dipMap.getInlandProvincesCopy().size());
+		assertEquals("Check coastal provinces", 1, dipMap.getCoastalProvincesCopy().size());
 		
 	}
 }
