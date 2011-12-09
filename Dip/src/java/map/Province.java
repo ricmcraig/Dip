@@ -1,18 +1,28 @@
 package map;
 
 import map.properties.Powers;
+import map.properties.Supply;
 import map.properties.Terrains;
 
-public class Province {
+public class Province implements Comparable<Province>{
 
 	private Identifier identifier;
-	private boolean hasSupplyCentre;
+	private Supply supply;
 	private Terrains type;
 	private Powers owner;
 	private String fullName;
 	private Aliases aliases;
 	private Neighbours neighbours;
 	
+	public Province() {
+	}
+	public Province(String identifier) {
+		setIdentifier(identifier);
+	}
+	public Province(Identifier identifier) {
+		setIdentifier(identifier);
+	}
+		
 	public Identifier getIdentifier() {
 		return identifier;
 	}
@@ -22,14 +32,25 @@ public class Province {
 	public void setIdentifier(String identifier) {
 		this.identifier = new Identifier(identifier);
 	}
-	public boolean isHasSupplyCentre() {
-		return hasSupplyCentre;
+	public Supply getSupply() {
+		return supply;
 	}
-	public void setHasSupplyCentre(boolean hasSupplyCentre) {
-		this.hasSupplyCentre = hasSupplyCentre;
+	public void setSupply(Supply supply) {
+		this.supply = supply;
 	}
-	public void setHasSupplyCentre(String hasSupplyCentre) {
-		this.hasSupplyCentre = hasSupplyCentre != null && hasSupplyCentre.trim().equalsIgnoreCase("SC");
+	public void setSupply(String supply) {
+		this.supply = null;
+		String trimmedSupply = supply.trim();
+		
+		for(Supply s: Supply.values()){
+			if (s.getSupplyID().equalsIgnoreCase(trimmedSupply)){
+				this.supply = s;
+				break;
+			}
+		}
+		if (this.supply == null){
+			throw new IllegalArgumentException(Supply.expectedMessage + "Got: " + trimmedSupply);
+		}
 	}
 	public Terrains getType() {
 		return type;
@@ -96,7 +117,36 @@ public class Province {
 		this.neighbours = new Neighbours(neighbours);
 	}
 	
+	@Override
+	public boolean equals(Object o){
+		// Provinces are equal if their Identifiers are equal. If other properties are different, this is ignored.
+		if (o == null || !(o instanceof Province)) {
+			return false;
+		}
+		return (((Province)o).getIdentifier().equals(this.identifier));
+	}
+	
+	@Override
+	public int hashCode(){
+		return identifier.hashCode();
+	}
+
+	@Override
+	public int compareTo(Province i) {
+		return identifier.compareTo(i.getIdentifier());
+	}
+	
+	@Override
 	public String toString(){
-		return "Province:(" + identifier + ")";
+		final String SEPARATOR = ", ";
+		StringBuilder ps = new StringBuilder("Province:(");
+		ps.append(identifier).append(SEPARATOR);
+		ps.append(type).append(SEPARATOR);
+		ps.append(supply).append(SEPARATOR);
+		ps.append(owner).append(SEPARATOR);
+		ps.append(fullName).append(SEPARATOR);
+		ps.append(aliases).append(SEPARATOR);
+		ps.append(neighbours).append(")");
+		return ps.toString();
 	}
 }
