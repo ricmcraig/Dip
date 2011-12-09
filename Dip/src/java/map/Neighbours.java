@@ -27,11 +27,13 @@ public class Neighbours {
 
 	@Override
 	public String toString(){
-		//Order of neighbours not guaranteed. For consistency, make to_string order alphabetical.
+		//Order of neighbours not guaranteed. For ease of reading, ensure to_string returns contents in natural order.
 		StringBuilder sb = new StringBuilder("");
-		for(Identifier i:new TreeSet<Identifier>(neighbours)){
+		TreeSet<Identifier> ts = new TreeSet<Identifier>(neighbours); 
+		for(Identifier i:ts.headSet(ts.last())){
 			sb.append(i.toString()).append(", ");
 		}
-		return sb.delete(sb.length()-2, sb.length()).toString();
+		sb.append(ts.last());
+		return sb.toString();
 	}
 }
