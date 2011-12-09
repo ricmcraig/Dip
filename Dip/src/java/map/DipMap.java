@@ -1,6 +1,8 @@
 package map;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Set;
 
 import map.properties.Terrains;
 public class DipMap {
@@ -19,13 +21,24 @@ public class DipMap {
 	
 	public void addProvince(Province province){
 		dipMap.put(province.getIdentifier(), province);
-		if (province.getType() == Terrains.SEA){
-			seaProvinces.add(province.getIdentifier());
-		} else {
-			inlandProvinces.add(province.getIdentifier());
+		switch(province.getType()) { 
+			case SEA: {
+				seaProvinces.add(province.getIdentifier());
+				break;
+			}
+			case INLAND: {
+				inlandProvinces.add(province.getIdentifier());
+				break;
+			}
+			case COAST: {
+				coastalProvinces.add(province.getIdentifier());
+				break;
+			}
 		}
 	}
 	
+	/*  When a map is read from a .dip file, provinces are either sea or land.
+		This methods splits land provinces into coastal and inland. */
 	public void resolveLandTypes(){
 		for(Identifier i:inlandProvinces){
 			if (dipMap.get(i).getNeighbours().containsAny(seaProvinces)){
@@ -34,19 +47,16 @@ public class DipMap {
 			}
 		}
 		inlandProvinces.removeAll(coastalProvinces);
-		System.out.println("Sea Provinces: " +seaProvinces);
-		System.out.println("Inland Provinces: " +inlandProvinces);
-		System.out.println("Coastal Provinces: " +coastalProvinces);
-	
 	}
 	
-	public HashSet<Identifier> getSeaProvinces(){
-		return new HashSet<Identifier>(seaProvinces);
+	public Set<Identifier> getSeaProvincesCopy(){
+		return Collections.unmodifiableSet(seaProvinces);
 	}
-	public HashSet<Identifier> getInlandProvinces(){
-		return new HashSet<Identifier>(inlandProvinces);
+	public Set<Identifier> getInlandProvincesCopy(){
+		return Collections.unmodifiableSet(inlandProvinces);
 	}
-	public HashSet<Identifier> getCoastalProvinces(){
-		return new HashSet<Identifier>(coastalProvinces);
+	public Set<Identifier> getCoastalProvincesCopy(){
+		return Collections.unmodifiableSet(coastalProvinces);
 	}
+
 }
