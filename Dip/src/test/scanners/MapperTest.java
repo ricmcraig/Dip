@@ -17,9 +17,9 @@ public class MapperTest {
 	
 	@Test
 	public void createStandardMap() {
-		Mapper mapper = new Mapper(STANDARD_MAP_FILENAME);
+		StandardMapper standardMapper = new StandardMapper(STANDARD_MAP_FILENAME);
 		DipMap dipMap = new DipMap();
-		mapper.constructMap(dipMap);
+		standardMapper.getProvinces(dipMap);
 		dipMap.resolveLandTypes();
 		assertEquals("Check sea provinces",STANDARD_MAP_SEA_PROVINCES_NUMBER,dipMap.getSeaProvincesCopy().size());
 		assertEquals("Check inland provinces",STANDARD_MAP_INLAND_PROVINCES_NUMBER,dipMap.getInlandProvincesCopy().size());
@@ -29,9 +29,9 @@ public class MapperTest {
 	@Test
 	// Regression test following problem corrected in /Dip/mapstest/standardtest.dip
 	public void testSpainCoastal() {
-		Mapper mapper = new Mapper(SPAIN_COASTAL_MAP_FILENAME);
+		StandardMapper standardMapper = new StandardMapper(SPAIN_COASTAL_MAP_FILENAME);
 		DipMap dipMap = new DipMap();
-		mapper.constructMap(dipMap);
+		standardMapper.getProvinces(dipMap);
 		dipMap.resolveLandTypes();
 		assertEquals("Check sea provinces",STANDARD_MAP_SEA_PROVINCES_NUMBER,dipMap.getSeaProvincesCopy().size());
 		assertEquals("Check inland provinces", 0, dipMap.getInlandProvincesCopy().size());

@@ -8,7 +8,7 @@ import scanners.BracketedCSVScanner;
 
 public class Neighbours {
 
-	private Set<Identifier> neighbours;
+	private final Set<Identifier> neighbours;
 	
 	public Neighbours(String neighbourString){
 		BracketedCSVScanner neighbourScanner = new BracketedCSVScanner();

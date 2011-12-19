@@ -2,6 +2,10 @@ package map;
 
 import static org.junit.Assert.*;
 
+import java.util.Set;
+
+import map.properties.Powers;
+import map.properties.Supply;
 import map.properties.Terrains;
 
 import org.junit.Test;
@@ -47,7 +51,7 @@ public class DipMapTest {
 	@Test
 	public void addSingleCoastalProvince() {
 		final String PROVINCE_NAME = "ABC";
-		DipMap dm = new DipMap();
+		DipMap dm = new DipMap(new IMapper {getProvinces()});
 		Province sp = createProvince(Terrains.COAST, PROVINCE_NAME);
 		dm.addProvince(sp);
 		assertTrue("Should be no sea province",dm.getSeaProvincesCopy() != null && dm.getSeaProvincesCopy().isEmpty());
@@ -56,10 +60,12 @@ public class DipMapTest {
 		assertTrue("Coastal province should be the one added", dm.getCoastalProvincesCopy().contains(sp.getIdentifier()));
 	}
 
+	private IMapper createMapper(Set<Province> provinces){
+		return new IMapper(){ public Set<Province> getProvinces(){return provinces;}};
+	}
+	
 	private Province createProvince(Terrains type, String id){
-		Province sp = new Province();
-		sp.setIdentifier(id);
-		sp.setType(type);
+		Province sp = new Province(new Identifier(id), type, Supply.NONE, Powers.AUSTRIAHUNGARY, "Any Name", new Aliases(""), new Neighbours(""));
 		return sp;
 	}
 }

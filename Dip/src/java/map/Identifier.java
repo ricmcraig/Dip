@@ -4,11 +4,7 @@ package map;
 public class Identifier implements Comparable<Identifier> {
 	
 	private static final String ID_REGEX = "\\w\\w\\w(\\(\\wC\\))?";
-	private String id;
-	
-	public String getID(){
-		return id;
-	}
+	private final String id;
 	
 	public Identifier (String id){
 		
@@ -17,6 +13,10 @@ public class Identifier implements Comparable<Identifier> {
 		}
 		
 		this.id = id.trim().toUpperCase();
+	}
+	
+	public String getID(){
+		return id;
 	}
 	
 	@Override

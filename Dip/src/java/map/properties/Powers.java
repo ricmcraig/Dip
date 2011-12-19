@@ -10,15 +10,26 @@ public enum Powers {
 	TURKEY("T"),
 	NONE("");
 	
-	public static String expectedMessage = "Expected value of \"A\", \"E\", \"F\", \"G\", \"I\", \"R\", \"T\" or \"\". ";
+	private static String expectedMessage = "Expected value of \"A\", \"E\", \"F\", \"G\", \"I\", \"R\", \"T\" or \"\". ";
 	
 	private String powerID;
 	
+	public static Powers getPower (String power){
+		String trimmedPower = power.trim();
+		
+		for (Powers p: Powers.values()){
+			if (p.getPowerID().equalsIgnoreCase(trimmedPower)){
+				return p;
+			}
+		}
+		throw new IllegalArgumentException(Powers.expectedMessage + "Got: " + trimmedPower);
+	}
+
+	public String getPowerID(){
+		return this.powerID;
+	}
 	private Powers (String powerID){
 		this.powerID = powerID;
 	}
 	
-	public String getPowerID(){
-		return this.powerID;
-	}
 }
