@@ -47,11 +47,9 @@ public class StandardMapper implements IMapper{
 		Scanner lineScanner = null;
 		String line = null; 
 		int lineNo = 0;
-		String mapFileName = null;
 		
 		// First pass: read the file and create set of provisional provinces and capture list of sea province names
 		try{
-			mapFileName = mapFile.getCanonicalPath();
 			BufferedReader br = new BufferedReader(new FileReader(mapFile));
 			while ((line = br.readLine()) != null){
 				lineNo++;
@@ -71,21 +69,13 @@ public class StandardMapper implements IMapper{
 			}
 		}
 		catch (FileNotFoundException fnfe){
-			if (mapFileName == null){
-				throw new IllegalArgumentException ("Map file cannot be found.");
-			} else {
-				throw new IllegalArgumentException("Map file " + mapFileName + " cannot be found.");
-			}
+			throw new IllegalArgumentException("Map file " + mapFile.getAbsolutePath() + " cannot be found.");
 		}
 		catch (IOException ioe){
-			if (mapFileName == null){
-				throw new IllegalArgumentException ("Map file cannot be read.");
-			} else {
-				throw new IllegalArgumentException("Map file " + mapFileName + " cannot be read.");
-			}
+			throw new IllegalArgumentException("Map file " + mapFile.getAbsolutePath() + " cannot be read.");
 		}
 		catch (NoSuchElementException nsee){
-			throw new IllegalArgumentException("Map file " + mapFileName + " has problem at line: " + lineNo);
+			throw new IllegalArgumentException("Map file " + mapFile.getAbsolutePath() + " has problem at line: " + lineNo);
 		}
 		
 		// Second pass: adjust provisional inland provinces to coastal provinces if they have a neighbouring sea province
