@@ -6,6 +6,5 @@ import net.craigrm.dip.state.Unit;
 public interface IMapper {
 
 	Set<Province> getProvinces();
-	Set<Unit> getStartPosition();
 	
 }

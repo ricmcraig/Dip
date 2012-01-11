@@ -28,6 +28,7 @@ public enum Powers {
 	public String getPowerID(){
 		return this.powerID;
 	}
+
 	private Powers (String powerID){
 		this.powerID = powerID;
 	}

@@ -1,0 +1,32 @@
+#TURN
+1901S
+#UNITS
+#Austria-Hungary
+BUD, A, A
+TRI, A, F
+VIE, A, A
+#England
+EDI, E, F
+LON, E, F
+LPL, E, A
+#France
+BRE, F, F
+MAR, F, A
+PAR, F, A
+#Germany
+BER, G, A
+KIE, G, F
+MUN, G, A
+#Italy
+NAP, I, F
+ROM, I, A
+VEN, I, A
+#Russia
+MOS, R, A
+SEV, R, F
+STP(SC), R, F
+WAR,  R, A
+#Turkey
+ANK, T, F
+CON, T, A
+SMY, T, A

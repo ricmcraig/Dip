@@ -1,9 +1,24 @@
 package net.craigrm.dip.state;
 
-enum Season {
-	SPRING, FALL;
+import net.craigrm.dip.exceptions.SeasonFormatException;
+
+public enum Season {
+	SPRING("S"), FALL("F");
 	
-	public static final Season INITIAL_SEASON = SPRING;
+	private static String expectedMessage = "Expected value of \"S\" or \"F\". ";
+	
+	private String seasonID;
+	
+	public static Season getSeason (String season){
+		String trimmedSeason = season.trim();
+		
+		for (Season s: Season.values()){
+			if (s.getSeasonID().equalsIgnoreCase(trimmedSeason)){
+				return s;
+			}
+		}
+		throw new SeasonFormatException(Season.expectedMessage + "Got: " + trimmedSeason);
+	}
 
 	/**
 	 * @return the next {@code Season} in the enumeration, or the first 
@@ -14,4 +29,14 @@ enum Season {
 		int nextOrdinalValue = (this.ordinal()+1) % Season.values().length;
 		return Season.values()[nextOrdinalValue];
 	}
+	
+	public String getSeasonID(){
+		return this.seasonID;
+	}
+
+	private Season (String seasonID){
+		this.seasonID = seasonID;
+	}
+	
+
 }

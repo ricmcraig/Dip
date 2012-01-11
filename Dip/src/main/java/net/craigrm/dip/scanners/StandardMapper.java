@@ -29,7 +29,6 @@ public class StandardMapper implements IMapper{
 
 	private File mapFile;
 	private Set<Province> provinces = new HashSet<Province>();
-	private Set<Unit> startPosition = new HashSet<Unit>();
 	
 	public StandardMapper(File mapFile){
 		this.mapFile = mapFile;
@@ -48,10 +47,6 @@ public class StandardMapper implements IMapper{
 	
 	public Set<Province> getProvinces(){
 		return provinces;
-	}
-
-	public Set<Unit> getStartPosition(){
-		return startPosition;
 	}
 
 	public void parseGameDefinition(){
@@ -75,14 +70,9 @@ public class StandardMapper implements IMapper{
 				String fullName = lineScanner.next();
 				Aliases aliases = new Aliases(lineScanner.findInLine(ALIASES_REGEX));
 				Neighbours neighbours = new Neighbours(lineScanner.findInLine(NEIGHBOURS_REGEX));
-				Powers unitOwner = Powers.getPower(lineScanner.next());
-				UnitType unitType = UnitType.getType(lineScanner.next());
 				provisionalProvinces.add(new Province(id, terrain, supply, owner, fullName, aliases, neighbours));
 				if (terrain == Terrains.SEA) {
 					seaProvincesIds.add(id);
-				}
-				if (unitType != UnitType.NONE) {
-					startPosition.add(new Unit(id, unitOwner, unitType));
 				}
 			}
 		}

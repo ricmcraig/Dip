@@ -2,26 +2,29 @@ package net.craigrm.dip.state;
 
 class TurnIdentifier implements Comparable<TurnIdentifier>{
 	
-	public static final TurnIdentifier INITIAL_TURN_ID = new TurnIdentifier(Season.INITIAL_SEASON, Year.INITIAL_YEAR);
-	
-	private final Season season;
 	private final Year year;
+	private final Season season;
 	private final int seasonNumber; //Convenience field used to determine natural order
 	
-	private TurnIdentifier(Season season, Year year){
-		this.season = season;
+	TurnIdentifier(Year year, Season season){
 		this.year = year;
+		this.season = season;
 		this.seasonNumber = year.getYearNumber() * Season.values().length + season.ordinal();
 	}
 	
-	public TurnIdentifier next(){
+	TurnIdentifier(String year, String season){
+		this.year = new Year(year);
+		this.season = Season.getSeason(season);
+		this.seasonNumber = this.year.getYearNumber() * Season.values().length + this.season.ordinal();
+	}
+	
+	TurnIdentifier next(){
 		Season newSeason = season.next();
 		Year newYear = year;
 		if (newSeason.equals(Season.SPRING)) {
 			newYear = year.next();
 		} 
-		
-		return  new TurnIdentifier(newSeason, newYear);
+		return  new TurnIdentifier(newYear, newSeason);
 	}
 	
 	@Override
