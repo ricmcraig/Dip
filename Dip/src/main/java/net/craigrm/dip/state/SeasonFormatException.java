@@ -1,11 +1,8 @@
-package net.craigrm.dip.exceptions;
+package net.craigrm.dip.state;
 
 public class SeasonFormatException extends IllegalArgumentException {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 4028307236168861430L;
+	private static final long serialVersionUID = 0L;
 
 	public SeasonFormatException() {
 		super();

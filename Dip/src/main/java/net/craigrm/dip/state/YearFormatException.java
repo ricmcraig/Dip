@@ -1,11 +1,8 @@
-package net.craigrm.dip.exceptions;
+package net.craigrm.dip.state;
 
 public class YearFormatException extends IllegalArgumentException {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -5598893053796584582L;
+	private static final long serialVersionUID = 0L;
 
 	public YearFormatException() {
 		super();
