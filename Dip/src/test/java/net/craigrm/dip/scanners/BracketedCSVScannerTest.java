@@ -2,6 +2,7 @@ package net.craigrm.dip.scanners;
 
 import static org.junit.Assert.*;
 
+import java.util.Arrays;
 import java.util.Set;
 
 import net.craigrm.dip.map.Identifier;
@@ -13,74 +14,67 @@ public class BracketedCSVScannerTest {
 
 	@Test(expected=IllegalArgumentException.class) 
 	public void passedNullString() {
-		BracketedCSVScanner bcs = new BracketedCSVScanner();
-		@SuppressWarnings("unused")
-		Set<Identifier> rs = bcs.getUniqueIdentifiers(null);
+		BracketedCSVScanner bcs = new BracketedCSVScanner(null);
 	}
 
 	@Test(expected=IllegalArgumentException.class) 
 	public void passedEmptyString() {
-		BracketedCSVScanner bcs = new BracketedCSVScanner();
-		@SuppressWarnings("unused")
-		Set<Identifier> rs = bcs.getUniqueIdentifiers("");
+		BracketedCSVScanner bcs = new BracketedCSVScanner("");
 	}
 
 	@Test(expected=IllegalArgumentException.class) 
 	public void passedBadString() {
-		BracketedCSVScanner bcs = new BracketedCSVScanner();
-		@SuppressWarnings("unused")
-		Set<Identifier> rs = bcs.getUniqueIdentifiers("X");
+		BracketedCSVScanner bcs = new BracketedCSVScanner("X");
 	}
 
 	@Test
 	public void passedNoBracketedCSVScanner() {
-		BracketedCSVScanner bcs = new BracketedCSVScanner();
-		Set<Identifier> rs = bcs.getUniqueIdentifiers("()");
-		assertTrue("Should be empty", rs.isEmpty());
+		BracketedCSVScanner bcs = new BracketedCSVScanner("()");
+		assertEquals("Should be empty",0 ,bcs.getElements().length);
 	}
 
 	@Test
 	public void passedSingleIdentifierString() {
-		BracketedCSVScanner bcs = new BracketedCSVScanner();
-		Set<Identifier> rs = bcs.getUniqueIdentifiers("(XYZ)");
-		assertTrue("Should contain an XYZ Identifier", rs.contains(new Identifier("XYZ")));
+		BracketedCSVScanner bcs = new BracketedCSVScanner("(XYZ)");
+		String[] elements = bcs.getElements();
+		assertTrue("Should contain an XYZ Identifier", Arrays.asList(elements).contains("XYZ"));
 	}
 
 	@Test
 	public void passedManyIdentifierStrings() {
-		BracketedCSVScanner bcs = new BracketedCSVScanner();
-		Set<Identifier> rs = bcs.getUniqueIdentifiers("(ABC,DEF,GHI,JKL)");
-		assertTrue("Should contain an ABC Identifier", rs.contains(new Identifier("ABC")));
-		assertTrue("Should contain an DEF Identifier", rs.contains(new Identifier("DEF")));
-		assertTrue("Should contain an GHI Identifier", rs.contains(new Identifier("GHI")));
-		assertTrue("Should contain an JKL Identifier", rs.contains(new Identifier("JKL")));
+		BracketedCSVScanner bcs = new BracketedCSVScanner("(ABC,DEF,GHI,JKL)");
+		String[] elements = bcs.getElements();
+		assertTrue("Should contain an ABC Identifier", Arrays.asList(elements).contains("ABC"));
+		assertTrue("Should contain a DEF Identifier", Arrays.asList(elements).contains("DEF"));
+		assertTrue("Should contain a GHI Identifier", Arrays.asList(elements).contains("GHI"));
+		assertTrue("Should contain a JKL Identifier", Arrays.asList(elements).contains("JKL"));
 	}
 
 	@Test
 	public void passedManyIdentifierStringsWithWhiteSpace() {
-		BracketedCSVScanner bcs = new BracketedCSVScanner();
-		Set<Identifier> rs = bcs.getUniqueIdentifiers("( ABC, DEF ,GHI,  JKL  )");
-		assertTrue("Should contain an ABC Identifier", rs.contains(new Identifier("ABC")));
-		assertTrue("Should contain an DEF Identifier", rs.contains(new Identifier("DEF")));
-		assertTrue("Should contain an GHI Identifier", rs.contains(new Identifier("GHI")));
-		assertTrue("Should contain an JKL Identifier", rs.contains(new Identifier("JKL")));
+		BracketedCSVScanner bcs = new BracketedCSVScanner("( ABC, DEF ,GHI,  JKL  )");
+		String[] elements = bcs.getElements();
+		assertTrue("Should contain an ABC Identifier", Arrays.asList(elements).contains(" ABC"));
+		assertTrue("Should contain a DEF Identifier", Arrays.asList(elements).contains(" DEF "));
+		assertTrue("Should contain a GHI Identifier", Arrays.asList(elements).contains("GHI"));
+		assertTrue("Should contain a JKL Identifier", Arrays.asList(elements).contains("  JKL  "));
 	}
 
 	@Test
 	public void passedSingleCoastalIdentifierStrings() {
-		BracketedCSVScanner bcs = new BracketedCSVScanner();
-		Set<Identifier> rs = bcs.getUniqueIdentifiers("(XYZ(NC))");
-		assertTrue("Should contain an ABC Identifier", rs.contains(new Identifier("XYZ(NC)")));
+		BracketedCSVScanner bcs = new BracketedCSVScanner("(XYZ(NC))");
+		String[] elements = bcs.getElements();
+		assertTrue("Should contain an ABC Identifier", Arrays.asList(elements).contains("XYZ(NC)"));
 	}
 
 	@Test
 	public void passedManyCoastalIdentifierStrings() {
-		BracketedCSVScanner bcs = new BracketedCSVScanner();
-		Set<Identifier> rs = bcs.getUniqueIdentifiers("( ABC(NC), DEF(EC) ,GHI(SC),  JKL(WC)  )");
-		assertTrue("Should contain an ABC Identifier", rs.contains(new Identifier("ABC(NC)")));
-		assertTrue("Should contain an DEF Identifier", rs.contains(new Identifier("DEF(EC)")));
-		assertTrue("Should contain an GHI Identifier", rs.contains(new Identifier("GHI(SC)")));
-		assertTrue("Should contain an JKL Identifier", rs.contains(new Identifier("JKL(WC)")));
+		BracketedCSVScanner bcs = new BracketedCSVScanner("( ABC(NC), DEF(EC) ,GHI(SC),  JKL(WC)  )");
+		String[] elements = bcs.getElements();
+		assertTrue("Should contain an ABC Identifier", Arrays.asList(elements).contains(" ABC(NC)"));
+		assertTrue("Should contain a DEF Identifier", Arrays.asList(elements).contains(" DEF(EC) "));
+		assertTrue("Should contain a GHI Identifier", Arrays.asList(elements).contains("GHI(SC)"));
+		assertTrue("Should contain a JKL Identifier", Arrays.asList(elements).contains("  JKL(WC)  "));
 	}
 
 }

@@ -1,17 +1,37 @@
 package net.craigrm.dip.map;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
 
 import net.craigrm.dip.scanners.BracketedCSVScanner;
 
+/**
+ * Represents an immutable collection of alternative Province Identifiers 
+ * that uniquely identify a particular Province. <p>
+ * The canonical identifier for a Province is given by 
+ * {@link net.craigrm.dip.Province#getIdentifier()}. This is a collection 
+ * of alternative identifiers. Some provinces on the standard Diplomacy
+ * map are referred to by a number of different identifiers.  
+ * 
+ * @author Ric Craig
+ *
+ */
+		
+public final class Aliases {
 
-public class Aliases {
+	private final Set<Identifier> aliases = new HashSet<Identifier>();
 
-	private final Set<Identifier> aliases;
-	
-	public Aliases(String aliasString){
-		BracketedCSVScanner aliasScanner = new BracketedCSVScanner();
-		aliases = aliasScanner.getUniqueIdentifiers(aliasString);
+	/**
+	 * Constructs the collection of alternative Province Identifiers
+	 * 
+	 * @param aliasScanner .
+	 */
+	public Aliases(IBracketedCSVScanner aliasScanner){
+		for(String alias:aliasScanner.getElements()) {
+			if (!aliases.add(new Identifier(alias))) {
+				throw new AliasesStateException("Duplicate alias found.", alias);
+			}
+		}
 	}
 
 	public boolean contains(Identifier id){
@@ -33,4 +53,5 @@ public class Aliases {
 		sb.append(ts.last());
 		return sb.toString();
 	}
+	
 }

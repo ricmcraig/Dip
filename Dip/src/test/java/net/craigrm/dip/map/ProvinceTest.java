@@ -9,6 +9,7 @@ import net.craigrm.dip.map.Province;
 import net.craigrm.dip.map.properties.Powers;
 import net.craigrm.dip.map.properties.Supply;
 import net.craigrm.dip.map.properties.Terrains;
+import net.craigrm.dip.scanners.BracketedCSVScannerStub;
 
 import org.junit.Test;
 
@@ -92,6 +93,6 @@ public class ProvinceTest {
 	}
 
 	private Province makeProvince(String id) {
-		return new Province(new Identifier(id), Terrains.INLAND, Supply.NONE, Powers.NONE, id, new Aliases("()"), new Neighbours("()"));
+		return new Province(new Identifier(id), Terrains.INLAND, Supply.NONE, Powers.NONE, id, new Aliases(new BracketedCSVScannerStub()), new Neighbours(new BracketedCSVScannerStub()));
 	}
 }

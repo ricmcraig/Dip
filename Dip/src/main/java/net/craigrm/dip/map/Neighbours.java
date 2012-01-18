@@ -9,11 +9,12 @@ import net.craigrm.dip.scanners.BracketedCSVScanner;
 
 public class Neighbours {
 
-	private final Set<Identifier> neighbours;
+	private final Set<Identifier> neighbours = new HashSet<Identifier>();
 	
-	public Neighbours(String neighbourString){
-		BracketedCSVScanner neighbourScanner = new BracketedCSVScanner();
-		neighbours = neighbourScanner.getUniqueIdentifiers(neighbourString);
+	public Neighbours(IBracketedCSVScanner neighbourScanner){
+		for (String neighbour:neighbourScanner.getElements()){
+			neighbours.add(new Identifier(neighbour));
+		}
 	}
 
 	public boolean contains(Identifier id){
