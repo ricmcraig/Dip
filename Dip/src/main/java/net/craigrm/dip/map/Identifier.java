@@ -1,17 +1,33 @@
 package net.craigrm.dip.map;
 
+/**
+ * An immutable representation of a unique identifier of a Province.
+ * 
+ * @author Ric Craig
+ * 
+ */
 
 public class Identifier implements Comparable<Identifier> {
-	
+
 	private static final String ID_REGEX = "\\w\\w\\w(\\(\\wC\\))?";
 	private final String id;
-	
-	public Identifier (String id){
-		
-		if (id == null || !id.trim().toUpperCase().matches(ID_REGEX)){
-			throw new IllegalArgumentException("Province identifier has bad format: " + id);
+
+	/**
+	 * Constructs an Identifier for Province.    
+	 * @param id a string representation of the identifier that 
+	 * matches regular expression "\s*\w\w\w(\(\wC\))?\s*". 
+	 * Leading and trailing whitespace is removed and the input string
+	 * is converted to upper case.   
+	 * @throws java.lang.IllegalArgumentException If the input string 
+	 * is not of the correct form.
+	 */
+	public Identifier(String id) {
+
+		if (id == null || !id.trim().toUpperCase().matches(ID_REGEX)) {
+			throw new IllegalArgumentException(
+					"Province identifier has bad format: " + id);
 		}
-		
+
 		this.id = id.trim().toUpperCase();
 	}
 	
@@ -20,25 +36,36 @@ public class Identifier implements Comparable<Identifier> {
 	}
 	
 	@Override
-	public boolean equals(Object o){
-		if (o == null || !(o instanceof Identifier)) {
-			return false;
-		}
-		return (((Identifier)o).getID().equalsIgnoreCase(this.id));
+	public int compareTo(Identifier i) {
+		return id.compareTo(i.id);
 	}
-	
+
 	@Override
-	public int hashCode(){
+	public int hashCode() {
+		if (id == null)
+			return 0;
 		return id.hashCode();
 	}
 
 	@Override
-	public int compareTo(Identifier i) {
-		return id.compareTo(i.getID());
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Identifier other = (Identifier) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
 	}
-	
+
 	@Override
-	public String toString(){
+	public String toString() {
 		return id;
 	}
 }

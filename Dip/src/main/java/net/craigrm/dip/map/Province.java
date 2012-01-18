@@ -4,6 +4,25 @@ import net.craigrm.dip.map.properties.Powers;
 import net.craigrm.dip.map.properties.Supply;
 import net.craigrm.dip.map.properties.Terrains;
 
+/**
+ * Represents an area on the game board in which a unit may be played.
+ * <P>
+ * Areas which have separate coastlines are represented several times, once as 
+ * the whole province, for use with land units and once for each coastline,
+ * for use with sea units. This is because neighbours are dependent on coastline.
+ * <p>
+ * For example, on the standard map, Spain, which has two coastlines, is 
+ * represented as:
+ * <br>
+ * Spain, with neighbours: Gulf of Lyon, Gascony, Marseilles, 
+ * Mid Atlantic Ocean, Portugal and Western Mediterranean<br>
+ * Spain North Coast, with neighbours: Mid Atlantic Ocean, 
+ * Portugal and Western Mediterranean<br>
+ * Spain South Coast, with neighbours: Gulf of Lyon, Marseilles, 
+ * Mid Atlantic Ocean, Portugal and Western Mediterranean<br>
+ * 
+ * @author Ric Craig
+ */
 public class Province implements Comparable<Province>{
 
 	private final Identifier identifier;
@@ -14,7 +33,19 @@ public class Province implements Comparable<Province>{
 	private final Aliases aliases;
 	private final Neighbours neighbours;
 	
-	public Province(Identifier id, Terrains terrain, Supply supply, Powers owner, String fullName, Aliases aliases, Neighbours neighbours) {
+	/**
+	 * Constructs an immutable Province instance
+	 * 
+	 * @param id the canonical unique Identifier of this Province 
+	 * @param terrain the terrain type of the Province 
+	 * @param supply the supply value of the Province
+	 * @param owner the Power for whom the Province is a home province (may be none) 
+	 * @param fullName the name of the Province
+	 * @param aliases a collection of alternative Identifiers by which this Province is known
+	 * @param neighbours a collection Identifiers of Provinces that border this one
+	 */
+	public Province(Identifier id, Terrains terrain, Supply supply, Powers owner, 
+			String fullName, Aliases aliases, Neighbours neighbours) {
 		this.identifier = id;
         this.type = terrain;
         this.supply = supply;
@@ -24,42 +55,86 @@ public class Province implements Comparable<Province>{
         this.neighbours = neighbours;
 	}
 
+	/**
+	 * 
+	 * @return the canonical unique Identifier of this Province 
+	 */
 	public Identifier getIdentifier() {
 		return identifier;
 	}
+
+	/**
+	 * 
+	 * @return the terrain type of this Province 
+	 */
 	public Terrains getType() {
 		return type;
 	}
+
+	/**
+	 * 
+	 * @return the supply value of this Province 
+	 */
 	public Supply getSupply() {
 		return supply;
 	}
+
+	/**
+	 * 
+	 * @return the owner, if any, of this Province (note the owner may
+	 *  differ from the current controller, which is an attribute of 
+	 *  {@link net.craigrm.dip.state.TurnState}  
+	 */
 	public Powers getOwner() {
 		return owner;
 	}
+
+	/**
+	 * 
+	 * @return the natural language name of this Province 
+	 */
 	public String getFullName() {
 		return fullName;
 	}
+
+	/**
+	 * 
+	 * @return a collection of alternative commonly used unique Identifiers of this Province 
+	 */
 	public Aliases getAliases() {
 		return aliases;
 	}
+
+	/**
+	 * 
+	 * @return a collection of Identifiers of Provinces that border this one 
+	 */
 	public Neighbours getNeighbours() {
 		return neighbours;
 	}
 	
 	@Override
-	public boolean equals(Object o){
-		// Provinces are equal if their Identifiers are equal. If other properties are different, this is ignored.
-		if (o == null || !(o instanceof Province)) {
-			return false;
-		}
-		return (((Province)o).getIdentifier().equals(this.identifier));
-	}
-	
-	@Override
-	public int hashCode(){
-		return identifier.hashCode();
+	public int hashCode() {
+		return ((identifier == null) ? 1 : identifier.hashCode());
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Province other = (Province) obj;
+		if (identifier == null) {
+			if (other.identifier != null)
+				return false;
+		} else if (!identifier.equals(other.identifier))
+			return false;
+		return true;
+	}
+	
 	@Override
 	public int compareTo(Province i) {
 		return identifier.compareTo(i.getIdentifier());
