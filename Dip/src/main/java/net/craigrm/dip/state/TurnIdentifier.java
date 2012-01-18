@@ -13,9 +13,7 @@ class TurnIdentifier implements Comparable<TurnIdentifier>{
 	}
 	
 	TurnIdentifier(String year, String season){
-		this.year = new Year(year);
-		this.season = Season.getSeason(season);
-		this.seasonNumber = this.year.getYearNumber() * Season.values().length + this.season.ordinal();
+		this(new Year(year), Season.getSeason(season));
 	}
 	
 	TurnIdentifier next(){
@@ -31,6 +29,25 @@ class TurnIdentifier implements Comparable<TurnIdentifier>{
 	public int compareTo(TurnIdentifier other) {
 		//Returns the number of seasons between the two turns
 		return this.seasonNumber - other.seasonNumber;
+	}
+
+	@Override
+	public int hashCode() {
+		return seasonNumber;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		TurnIdentifier other = (TurnIdentifier) obj;
+		if (seasonNumber != other.seasonNumber)
+			return false;
+		return true;
 	}
 	
 }
