@@ -11,14 +11,16 @@ import java.util.Scanner;
 import java.io.BufferedReader;
 import java.io.FileReader;
 
-import net.craigrm.dip.exceptions.*;
 import net.craigrm.dip.gameturn.IPositionParser;
 import net.craigrm.dip.map.Identifier;
 import net.craigrm.dip.map.properties.Powers;
+import net.craigrm.dip.state.Control;
 import net.craigrm.dip.state.Season;
+import net.craigrm.dip.state.SeasonFormatException;
 import net.craigrm.dip.state.Unit;
 import net.craigrm.dip.state.UnitType;
 import net.craigrm.dip.state.Year;
+import net.craigrm.dip.state.YearFormatException;
 
 public class StandardPositionParser implements IPositionParser{
 
@@ -30,6 +32,7 @@ public class StandardPositionParser implements IPositionParser{
 
 	private File posFile;
 	private Set<Unit> units = new HashSet<Unit>();
+	private Set<Control> control = new HashSet<Control>();
 	private Year year = null;
 	private Season season = null;
 	
@@ -50,6 +53,10 @@ public class StandardPositionParser implements IPositionParser{
 	
 	public Set<Unit> getUnits(){
 		return Collections.unmodifiableSet(units);
+	}
+
+	public Set<Control> getControl(){
+		return Collections.unmodifiableSet(control);
 	}
 
 	public Year getYear(){
@@ -89,13 +96,26 @@ public class StandardPositionParser implements IPositionParser{
 				}
 				lineScanner = new Scanner(line);
 				lineScanner.useDelimiter(",");
-				Identifier id = new Identifier(lineScanner.next());
-				Powers unitOwner = Powers.getPower(lineScanner.next());
-				UnitType unitType = UnitType.getType(lineScanner.next());
-				units.add(new Unit(id, unitOwner, unitType));
+				if (line.matches(".*,.*,.*")) {
+					Identifier id = new Identifier(lineScanner.next());
+					Powers unitOwner = Powers.getPower(lineScanner.next());
+					UnitType unitType = UnitType.getType(lineScanner.next());
+					units.add(new Unit(id, unitOwner, unitType));
+				} else if (line.matches(".*,.*")) {
+					Identifier id = new Identifier(lineScanner.next());
+					Powers controller = Powers.getPower(lineScanner.next());
+					control.add(new Control(id, controller));
+					
+				} else {
+					throw new IllegalArgumentException("Position file " + posFile.getAbsolutePath() + ". Line " + lineNo + " unexpected format.");
+				}
 			}
 			if (units.isEmpty()){
-				throw new IllegalArgumentException("Position file " + posFile.getAbsolutePath() + ". Could not find unit positions");
+				throw new IllegalArgumentException("Position file " + posFile.getAbsolutePath() + ". Could not find unit positions.");
+			}
+			
+			if (control.isEmpty()){
+				throw new IllegalArgumentException("Position file " + posFile.getAbsolutePath() + ". Could not find control.");
 			}
 			
 		}
