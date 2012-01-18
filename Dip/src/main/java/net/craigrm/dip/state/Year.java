@@ -1,8 +1,7 @@
 package net.craigrm.dip.state;
 
-import net.craigrm.dip.exceptions.YearFormatException;
 
-public class Year {
+public final class Year {
 	
 	private final int yearNumber;
 
@@ -34,7 +33,8 @@ public class Year {
 
 	@Override
 	public int hashCode() {
-		return new Integer(yearNumber).hashCode();
+		// Use yearNumber for hash code (modelled on Integer which uses underlying primitive int)
+		return yearNumber;
 	}
 
 	@Override

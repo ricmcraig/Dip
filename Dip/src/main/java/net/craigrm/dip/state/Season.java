@@ -1,6 +1,5 @@
 package net.craigrm.dip.state;
 
-import net.craigrm.dip.exceptions.SeasonFormatException;
 
 public enum Season {
 	SPRING("S"), FALL("F");
