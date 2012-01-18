@@ -10,9 +10,11 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 
 import net.craigrm.dip.map.Aliases;
+import net.craigrm.dip.map.AliasesStateException;
 import net.craigrm.dip.map.IMapper;
 import net.craigrm.dip.map.Identifier;
 import net.craigrm.dip.map.Neighbours;
+import net.craigrm.dip.map.NeighboursStateException;
 import net.craigrm.dip.map.Province;
 import net.craigrm.dip.map.properties.Powers;
 import net.craigrm.dip.map.properties.Supply;
@@ -40,16 +42,16 @@ public class StandardMapper implements IMapper{
 		{
 			throw new IllegalArgumentException("Map file name not specified.");
 		}
-		File mapFile = new File(mapFileName);
-		this.mapFile = mapFile;
+		this.mapFile = new File(mapFileName);
 		checkFile();
+		parseMapDefinition();
 	}
 	
 	public Set<Province> getProvinces(){
 		return provinces;
 	}
 
-	public void parseGameDefinition(){
+	private void parseMapDefinition(){
 		Set<Province> provisionalProvinces = new HashSet<Province>();
 		Set<Identifier> seaProvincesIds = new HashSet<Identifier>();
 		Scanner lineScanner = null;
@@ -68,8 +70,10 @@ public class StandardMapper implements IMapper{
 				Supply supply = Supply.getSupply(lineScanner.next());
 				Powers owner = Powers.getPower(lineScanner.next());
 				String fullName = lineScanner.next();
-				Aliases aliases = new Aliases(lineScanner.findInLine(ALIASES_REGEX));
-				Neighbours neighbours = new Neighbours(lineScanner.findInLine(NEIGHBOURS_REGEX));
+				String aliasesString = lineScanner.findInLine(ALIASES_REGEX);
+				Aliases aliases = new Aliases(new BracketedCSVScanner(aliasesString));
+				String neighboursString = lineScanner.findInLine(NEIGHBOURS_REGEX);
+				Neighbours neighbours = new Neighbours(new BracketedCSVScanner(neighboursString));
 				provisionalProvinces.add(new Province(id, terrain, supply, owner, fullName, aliases, neighbours));
 				if (terrain == Terrains.SEA) {
 					seaProvincesIds.add(id);
@@ -77,13 +81,19 @@ public class StandardMapper implements IMapper{
 			}
 		}
 		catch (FileNotFoundException fnfe){
-			throw new IllegalArgumentException("Map file " + mapFile.getAbsolutePath() + " cannot be found.");
+			throw new IllegalArgumentException("Map file " + mapFile.getAbsolutePath() + " cannot be found.", fnfe);
 		}
 		catch (IOException ioe){
-			throw new IllegalArgumentException("Map file " + mapFile.getAbsolutePath() + " cannot be read.");
+			throw new IllegalArgumentException("Map file " + mapFile.getAbsolutePath() + " cannot be read.", ioe);
 		}
 		catch (NoSuchElementException nsee){
-			throw new IllegalArgumentException("Map file " + mapFile.getAbsolutePath() + " has problem at line: " + lineNo);
+			throw new IllegalArgumentException("Map file " + mapFile.getAbsolutePath() + " has problem at line: " + lineNo, nsee);
+		}
+		catch (AliasesStateException afe){
+			throw new IllegalArgumentException("Map file " + mapFile.getAbsolutePath() + " has problem at line: " + lineNo, afe);
+		}
+		catch (NeighboursStateException nfe){
+			throw new IllegalArgumentException("Map file " + mapFile.getAbsolutePath() + " has problem at line: " + lineNo, nfe);
 		}
 		
 		// Second pass: adjust provisional inland provinces to coastal provinces if they have a neighbouring sea province
@@ -99,7 +109,6 @@ public class StandardMapper implements IMapper{
 		
 	}
 	
-
 	private void checkFile() {
 		if (mapFile == null) {
 			throw new IllegalArgumentException("Map file not specified.");
