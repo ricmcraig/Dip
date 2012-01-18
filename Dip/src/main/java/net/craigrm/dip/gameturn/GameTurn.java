@@ -15,7 +15,6 @@ public class GameTurn {
 		StandardMapper standardMapper = new StandardMapper(mapFile);
 		StandardPositionParser standardPositionParser = new StandardPositionParser(positionFile);
 // TODO		StandardOrdersParser standardOrdersParser = new StandardOrdersParser(ordersFile);
-		standardMapper.parseGameDefinition();
 		dm = new DipMap(standardMapper);
 		ts = new TurnState(standardPositionParser);
 	}
