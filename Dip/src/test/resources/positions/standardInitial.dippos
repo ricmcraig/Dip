@@ -25,8 +25,38 @@ VEN, I, A
 MOS, R, A
 SEV, R, F
 STP(SC), R, F
-WAR,  R, A
+WAR, R, A
 #Turkey
 ANK, T, F
 CON, T, A
 SMY, T, A
+#CONTROL
+#Austria-Hungary
+BUD, A
+TRI, A
+VIE, A
+#England
+EDI, E
+LON, E
+LPL, E
+#France
+BRE, F
+MAR, F
+PAR, F
+#Germany
+BER, G
+KIE, G
+MUN, G
+#Italy
+NAP, I
+ROM, I
+VEN, I
+#Russia
+MOS, R
+SEV, R
+STP(SC), R
+WAR, R
+#Turkey
+ANK, T
+CON, T
+SMY, T
