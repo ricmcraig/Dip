@@ -92,7 +92,11 @@ public class ProvinceTest {
 		assertTrue("XYZ compareTo ABC is qreater", x.compareTo(a1) > 0);
 	}
 
-	private Province makeProvince(String id) {
+	@Test(expected = DuplicateIdentifierException.class)
+	public void throwsExceptionForDuplicates() {
+		new Neighbours(new BracketedCSVScannerStub("ABC", "DEF", "GHI", "ABC"));
+	}
+		private Province makeProvince(String id) {
 		return new Province(new Identifier(id), Terrains.INLAND, Supply.NONE, Powers.NONE, id, new Aliases(new BracketedCSVScannerStub()), new Neighbours(new BracketedCSVScannerStub()));
 	}
 }
