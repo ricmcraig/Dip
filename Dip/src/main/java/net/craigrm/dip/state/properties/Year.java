@@ -1,4 +1,4 @@
-package net.craigrm.dip.state;
+package net.craigrm.dip.state.properties;
 
 
 public final class Year {
@@ -22,7 +22,7 @@ public final class Year {
 		return new Year(yearNumber + 1);
 	}
 
-	int getYearNumber(){
+	public int getYearNumber(){
 		return yearNumber;
 	}
 	 

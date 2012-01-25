@@ -1,4 +1,4 @@
-package net.craigrm.dip.state;
+package net.craigrm.dip.state.properties;
 
 public enum UnitType {
 	ARMY("A"),
@@ -17,7 +17,7 @@ public enum UnitType {
 				return t;
 			}
 		}
-		throw new IllegalArgumentException(UnitType.expectedMessage + "Got: " + trimmedType);
+		throw new UnitTypeFormatException(UnitType.expectedMessage + "Got: " + trimmedType);
 	}
 
 	public String getType(){
@@ -27,8 +27,5 @@ public enum UnitType {
 	private UnitType(String unitType){
 		this.unitType = unitType;
 	}
-
-
-
 
 }

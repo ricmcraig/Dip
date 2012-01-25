@@ -1,4 +1,4 @@
-package net.craigrm.dip.state;
+package net.craigrm.dip.state.properties;
 
 
 public enum Season {
