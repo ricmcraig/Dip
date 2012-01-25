@@ -6,6 +6,7 @@ import net.craigrm.dip.map.IBracketedCSVScanner;
 
 public final class BracketedCSVScanner implements IBracketedCSVScanner {
 
+	private static final String EMPTY_LIST_REGEX = "\\(\\s*\\)";
 	private static final String CSV_SEPARATOR_REGEX = ",";
 	
 	private final String[] elements;
@@ -17,7 +18,7 @@ public final class BracketedCSVScanner implements IBracketedCSVScanner {
 		
 		String trimmedScanString = scanString.trim();
 		
-		if (trimmedScanString.equals("()")) {
+		if (trimmedScanString.matches(EMPTY_LIST_REGEX)) {
 			elements = new String[0];
 			return; 
 		}
