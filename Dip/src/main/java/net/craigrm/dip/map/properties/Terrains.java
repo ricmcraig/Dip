@@ -17,7 +17,7 @@ public enum Terrains {
 				return t;
 			}
 		}
-		throw new IllegalArgumentException(Terrains.expectedMessage + "Got: " + trimmedType);
+		throw new TerrainsFormatException(Terrains.expectedMessage + "Got: " + trimmedType);
 	}
 
 	public String getBroadType(){

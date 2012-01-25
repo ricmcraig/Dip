@@ -4,30 +4,29 @@ import java.io.IOException;
 import java.io.FileNotFoundException;
 import java.util.Set;
 import java.util.HashSet;
-import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.io.BufferedReader;
 import java.io.FileReader;
 
 import net.craigrm.dip.map.Aliases;
-import net.craigrm.dip.map.AliasesStateException;
+import net.craigrm.dip.map.DuplicateIdentifierException;
 import net.craigrm.dip.map.IMapper;
 import net.craigrm.dip.map.Identifier;
+import net.craigrm.dip.map.MapDefinitionException;
 import net.craigrm.dip.map.Neighbours;
-import net.craigrm.dip.map.NeighboursStateException;
 import net.craigrm.dip.map.Province;
 import net.craigrm.dip.map.properties.Powers;
 import net.craigrm.dip.map.properties.Supply;
 import net.craigrm.dip.map.properties.Terrains;
-import net.craigrm.dip.state.Unit;
-import net.craigrm.dip.state.UnitType;
-
-
 
 public class StandardMapper implements IMapper{
 
-	private static final String ALIASES_REGEX = "\\(.*?\\)";
-	private static final String NEIGHBOURS_REGEX = "\\(.*?[^\\(]..\\)";
+	private static final String OPTIONAL_WHITESPACE_REGEX = "\\s*";
+	private static final String IDENTIFIER_MAIN_PART_REGEX = "[a-zA-Z]{3}";
+	private static final String IDENTIFIER_OPTIONAL_PART_REGEX = "(\\([a-zA-Z]{2}\\))?";
+	private static final String IDENTIFIER_REGEX = String.format("%1$s%2$s%3$s%1$s", OPTIONAL_WHITESPACE_REGEX, IDENTIFIER_MAIN_PART_REGEX, IDENTIFIER_OPTIONAL_PART_REGEX);
+	private static final String EMPTY_IDENTIFIER_LIST_REGEX = String.format("%1$s\\(%1$s\\)%1$s", OPTIONAL_WHITESPACE_REGEX);
+	private static final String IDENTIFIER_LIST_REGEX = String.format("%1$s\\(%2$s(,%2$s)*\\)%1$s", OPTIONAL_WHITESPACE_REGEX, IDENTIFIER_REGEX);
 
 	private File mapFile;
 	private Set<Province> provinces = new HashSet<Province>();
@@ -35,6 +34,7 @@ public class StandardMapper implements IMapper{
 	public StandardMapper(File mapFile){
 		this.mapFile = mapFile;
 		checkFile();
+		parseMapDefinition();
 	}
 
 	public StandardMapper(String mapFileName){
@@ -65,35 +65,56 @@ public class StandardMapper implements IMapper{
 				lineNo++;
 				lineScanner = new Scanner(line);
 				lineScanner.useDelimiter(",");
+				
+				if (!lineScanner.hasNext())
+					throw new NoSuchMapElementException("Identifier");
 				Identifier id = new Identifier(lineScanner.next());
+				
+				if (!lineScanner.hasNext())
+					throw new NoSuchMapElementException("Terrain");
 				Terrains terrain = Terrains.getTerrain(lineScanner.next());
+				
+				if (!lineScanner.hasNext())
+					throw new NoSuchMapElementException("Suppply");
 				Supply supply = Supply.getSupply(lineScanner.next());
+				
+				if (!lineScanner.hasNext())
+					throw new NoSuchMapElementException("Power");
 				Powers owner = Powers.getPower(lineScanner.next());
+				
+				if (!lineScanner.hasNext())
+					throw new NoSuchMapElementException("Full Name");
 				String fullName = lineScanner.next();
-				String aliasesString = lineScanner.findInLine(ALIASES_REGEX);
+				
+				String aliasesString = getIdentifierList(lineScanner);
+				if (aliasesString == null)
+					throw new NoSuchMapElementException("Aliases");
 				Aliases aliases = new Aliases(new BracketedCSVScanner(aliasesString));
-				String neighboursString = lineScanner.findInLine(NEIGHBOURS_REGEX);
+				
+				String neighboursString = getIdentifierList(lineScanner);
+				if (neighboursString == null)
+					throw new NoSuchMapElementException("Neighbours");
 				Neighbours neighbours = new Neighbours(new BracketedCSVScanner(neighboursString));
-				provisionalProvinces.add(new Province(id, terrain, supply, owner, fullName, aliases, neighbours));
+				
+				if (!provisionalProvinces.add(new Province(id, terrain, supply, owner, fullName, aliases, neighbours)))
+					throw new DuplicateIdentifierException(id.getID());
+				
 				if (terrain == Terrains.SEA) {
 					seaProvincesIds.add(id);
 				}
 			}
 		}
 		catch (FileNotFoundException fnfe){
-			throw new IllegalArgumentException("Map file " + mapFile.getAbsolutePath() + " cannot be found.", fnfe);
-		}
+			throw new MapDefinitionException("Map file cannot be found.", fnfe, mapFile.getAbsolutePath(), lineNo);
+		} 
 		catch (IOException ioe){
-			throw new IllegalArgumentException("Map file " + mapFile.getAbsolutePath() + " cannot be read.", ioe);
+			throw new MapDefinitionException("Map file cannot be read.", ioe, mapFile.getAbsolutePath(), lineNo);
 		}
-		catch (NoSuchElementException nsee){
-			throw new IllegalArgumentException("Map file " + mapFile.getAbsolutePath() + " has problem at line: " + lineNo, nsee);
+		catch (NoSuchMapElementException nsmee){
+			throw new MapDefinitionException("Map file has a missing element.", nsmee, mapFile.getAbsolutePath(), lineNo);
 		}
-		catch (AliasesStateException afe){
-			throw new IllegalArgumentException("Map file " + mapFile.getAbsolutePath() + " has problem at line: " + lineNo, afe);
-		}
-		catch (NeighboursStateException nfe){
-			throw new IllegalArgumentException("Map file " + mapFile.getAbsolutePath() + " has problem at line: " + lineNo, nfe);
+		catch (DuplicateIdentifierException die){
+			throw new MapDefinitionException("Map file has a duplicate alias.", die, mapFile.getAbsolutePath(), lineNo);
 		}
 		
 		// Second pass: adjust provisional inland provinces to coastal provinces if they have a neighbouring sea province
@@ -109,20 +130,20 @@ public class StandardMapper implements IMapper{
 		
 	}
 	
+	private String getIdentifierList(Scanner lineScanner){
+		if(lineScanner.hasNext(EMPTY_IDENTIFIER_LIST_REGEX)){
+			return lineScanner.next(EMPTY_IDENTIFIER_LIST_REGEX);
+		}
+
+		return lineScanner.findInLine(IDENTIFIER_LIST_REGEX);
+	}
+	
 	private void checkFile() {
 		if (mapFile == null) {
 			throw new IllegalArgumentException("Map file not specified.");
 		}
 		
-		if (!mapFile.isFile()){
-			try {
-				String mapFileName = mapFile.getCanonicalPath();
-				throw new IllegalArgumentException("Map file " + mapFileName + " cannot be accessed.");
-			}
-			catch (IOException ioe){
-				throw new IllegalArgumentException ("Map file cannot be accessed.");
-			}
-			
-		}
+		if (!mapFile.isFile())
+			throw new IllegalArgumentException("Map file " + mapFile.getAbsolutePath() + " cannot be accessed.");
 	}
 }

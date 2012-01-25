@@ -18,7 +18,7 @@ public enum Supply {
 				 return s;
 			}
 		}
-		throw new IllegalArgumentException(Supply.expectedMessage + "Got: " + trimmedSupply);
+		throw new SupplyFormatException(Supply.expectedMessage + "Got: " + trimmedSupply);
 	}
 	
 	public int getSupplyValue(){

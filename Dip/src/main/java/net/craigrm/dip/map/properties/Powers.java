@@ -22,7 +22,7 @@ public enum Powers {
 				return p;
 			}
 		}
-		throw new IllegalArgumentException(Powers.expectedMessage + "Got: " + trimmedPower);
+		throw new PowersFormatException(Powers.expectedMessage + "Got: " + trimmedPower);
 	}
 
 	public String getPowerID(){

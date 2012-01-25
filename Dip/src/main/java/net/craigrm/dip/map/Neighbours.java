@@ -4,16 +4,15 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
 
-import net.craigrm.dip.scanners.BracketedCSVScanner;
-
-
 public class Neighbours {
 
 	private final Set<Identifier> neighbours = new HashSet<Identifier>();
 	
 	public Neighbours(IBracketedCSVScanner neighbourScanner){
 		for (String neighbour:neighbourScanner.getElements()){
-			neighbours.add(new Identifier(neighbour));
+			Identifier id = new Identifier(neighbour);
+			if (!neighbours.add(id))
+				throw new DuplicateIdentifierException("Duplicate neighbours found.", id.getID());
 		}
 	}
 

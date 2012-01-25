@@ -3,8 +3,6 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
 
-import net.craigrm.dip.scanners.BracketedCSVScanner;
-
 /**
  * Represents an immutable collection of alternative Province Identifiers 
  * that uniquely identify a particular Province. <p>
@@ -28,8 +26,9 @@ public final class Aliases {
 	 */
 	public Aliases(IBracketedCSVScanner aliasScanner){
 		for(String alias:aliasScanner.getElements()) {
-			if (!aliases.add(new Identifier(alias))) {
-				throw new AliasesStateException("Duplicate alias found.", alias);
+			Identifier id = new Identifier(alias);
+			if (!aliases.add(id)) {
+				throw new DuplicateIdentifierException("Duplicate alias found.", id.getID());
 			}
 		}
 	}
