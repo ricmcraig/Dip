@@ -1,5 +1,8 @@
 package net.craigrm.dip.state;
 
+import net.craigrm.dip.state.properties.Season;
+import net.craigrm.dip.state.properties.Year;
+
 class TurnIdentifier implements Comparable<TurnIdentifier>{
 	
 	private final Year year;

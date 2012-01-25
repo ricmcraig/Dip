@@ -1,6 +1,7 @@
 package net.craigrm.dip.state;
 import net.craigrm.dip.map.Identifier;
 import net.craigrm.dip.map.properties.Powers;
+import net.craigrm.dip.state.properties.UnitType;
 
 public class Unit {
 	private final Identifier currentPosition;
