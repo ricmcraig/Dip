@@ -10,10 +10,13 @@ import org.junit.Test;
 public class MapperTest {
 
 	private static final String STANDARD_MAP_FILENAME = "./src/test/resources/maps/standardtest.dip";
-	private static final String SPAIN_COASTAL_MAP_FILENAME = "./src/test/resources/maps/spaintest.dip";
 	private static final int STANDARD_MAP_SEA_PROVINCES_NUMBER = 19;
 	private static final int STANDARD_MAP_INLAND_PROVINCES_NUMBER = 14;
 	private static final int STANDARD_MAP_COASTAL_PROVINCES_NUMBER = 48;
+	
+	
+	private static final String SPAIN_COASTAL_MAP_FILENAME = "./src/test/resources/maps/spaintest.dip";
+	
 
 	
 	@Test
@@ -30,9 +33,9 @@ public class MapperTest {
 	public void testSpainCoastal() {
 		StandardMapper standardMapper = new StandardMapper(SPAIN_COASTAL_MAP_FILENAME);
 		DipMap dipMap = new DipMap(standardMapper);
-		assertEquals("Check sea provinces",STANDARD_MAP_SEA_PROVINCES_NUMBER,dipMap.getSeaProvinces().size());
+		assertEquals("Check sea provinces", STANDARD_MAP_SEA_PROVINCES_NUMBER, dipMap.getSeaProvinces().size());
 		assertEquals("Check inland provinces", 0, dipMap.getInlandProvinces().size());
 		assertEquals("Check coastal provinces", 1, dipMap.getCoastalProvinces().size());
-		
 	}
+
 }
