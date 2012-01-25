@@ -3,8 +3,8 @@ package net.craigrm.dip.scanners;
 import static org.junit.Assert.*;
 
 import net.craigrm.dip.gameturn.IPositionParser;
-import net.craigrm.dip.state.Season;
-import net.craigrm.dip.state.Year;
+import net.craigrm.dip.state.properties.Season;
+import net.craigrm.dip.state.properties.Year;
 import net.craigrm.dip.scanners.StandardPositionParser;
 
 import org.junit.Test;
