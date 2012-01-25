@@ -3,9 +3,6 @@ package net.craigrm.dip.scanners;
 import static org.junit.Assert.*;
 
 import java.util.Arrays;
-import java.util.Set;
-
-import net.craigrm.dip.map.Identifier;
 import net.craigrm.dip.scanners.BracketedCSVScanner;
 
 import org.junit.Test;
@@ -14,17 +11,17 @@ public class BracketedCSVScannerTest {
 
 	@Test(expected=IllegalArgumentException.class) 
 	public void passedNullString() {
-		BracketedCSVScanner bcs = new BracketedCSVScanner(null);
+		new BracketedCSVScanner(null);
 	}
 
 	@Test(expected=IllegalArgumentException.class) 
 	public void passedEmptyString() {
-		BracketedCSVScanner bcs = new BracketedCSVScanner("");
+		new BracketedCSVScanner("");
 	}
 
 	@Test(expected=IllegalArgumentException.class) 
 	public void passedBadString() {
-		BracketedCSVScanner bcs = new BracketedCSVScanner("X");
+		new BracketedCSVScanner("X");
 	}
 
 	@Test
