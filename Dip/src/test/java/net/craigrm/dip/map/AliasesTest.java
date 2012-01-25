@@ -4,7 +4,6 @@ import static org.junit.Assert.*;
 
 import net.craigrm.dip.map.Aliases;
 import net.craigrm.dip.map.Identifier;
-import net.craigrm.dip.scanners.BracketedCSVScanner;
 import net.craigrm.dip.scanners.BracketedCSVScannerStub;
 
 import org.junit.Test;
@@ -32,5 +31,9 @@ public class AliasesTest {
 		assertTrue("Should contain an JKL Identifier", a.contains(new Identifier("JKL")));
 	}
 	
+	@Test(expected = DuplicateIdentifierException.class)
+	public void throwsExceptionForDuplicates() {
+		new Aliases(new BracketedCSVScannerStub("ABC", "DEF", "GHI", "ABC"));
+	}
 	
 }
