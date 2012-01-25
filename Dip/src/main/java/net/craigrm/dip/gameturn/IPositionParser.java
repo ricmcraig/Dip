@@ -3,9 +3,9 @@ package net.craigrm.dip.gameturn;
 import java.util.Set;
 
 import net.craigrm.dip.state.Control;
-import net.craigrm.dip.state.Season;
 import net.craigrm.dip.state.Unit;
-import net.craigrm.dip.state.Year;
+import net.craigrm.dip.state.properties.Season;
+import net.craigrm.dip.state.properties.Year;
 
 public interface IPositionParser {
 

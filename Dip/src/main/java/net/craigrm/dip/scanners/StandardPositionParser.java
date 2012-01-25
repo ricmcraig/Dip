@@ -15,12 +15,12 @@ import net.craigrm.dip.gameturn.IPositionParser;
 import net.craigrm.dip.map.Identifier;
 import net.craigrm.dip.map.properties.Powers;
 import net.craigrm.dip.state.Control;
-import net.craigrm.dip.state.Season;
-import net.craigrm.dip.state.SeasonFormatException;
 import net.craigrm.dip.state.Unit;
-import net.craigrm.dip.state.UnitType;
-import net.craigrm.dip.state.Year;
-import net.craigrm.dip.state.YearFormatException;
+import net.craigrm.dip.state.properties.Season;
+import net.craigrm.dip.state.properties.SeasonFormatException;
+import net.craigrm.dip.state.properties.UnitType;
+import net.craigrm.dip.state.properties.Year;
+import net.craigrm.dip.state.properties.YearFormatException;
 
 public class StandardPositionParser implements IPositionParser{
 
