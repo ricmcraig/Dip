@@ -11,44 +11,37 @@ public class IdentifierTest {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void constructorPassedNullString() {
-		@SuppressWarnings("unused")
-		Identifier i = new Identifier(null);
+		new Identifier(null);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void constructorPassedEmptyString() {
-		@SuppressWarnings("unused")
-		Identifier i = new Identifier("");
+		new Identifier("");
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void constructorPassedBadString() {
-		@SuppressWarnings("unused")
-		Identifier i = new Identifier("X");
+		new Identifier("X");
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void constructorPassedBadCoastalString() {
-		@SuppressWarnings("unused")
-		Identifier i = new Identifier("ABC(NX)");
+		new Identifier("ABC(NX)");
 	}
 
 	@Test
 	public void constructorPassedGoodString() {
-		@SuppressWarnings("unused")
-		Identifier i = new Identifier("ABC");
+		new Identifier("ABC");
 	}
 
 	@Test
 	public void constructorPassedGoodLowerCaseString() {
-		@SuppressWarnings("unused")
-		Identifier i = new Identifier("abc");
+		new Identifier("abc");
 	}
 
 	@Test
 	public void constructorPassedGoodLowerCaseCoastalString() {
-		@SuppressWarnings("unused")
-		Identifier i = new Identifier("abc(nc)");
+		new Identifier("abc(nc)");
 	}
 
 	@Test

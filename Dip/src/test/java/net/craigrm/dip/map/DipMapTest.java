@@ -15,16 +15,12 @@ import net.craigrm.dip.map.properties.Powers;
 import net.craigrm.dip.map.properties.Supply;
 import net.craigrm.dip.map.properties.Terrains;
 import net.craigrm.dip.scanners.BracketedCSVScanner;
-import net.craigrm.dip.state.Unit;
 
 import org.junit.Test;
 
 
 public class DipMapTest {
 	
-	private static final String SINGLE_SEA_PROVINCE_FILENAME = "./mapstest/singleSeaProvince.dip";
-	private static final String SINGLE_COASTAL_PROVINCE_FILENAME = "./mapstest/singleCoastalProvince.dip";
-	private static final String SINGLE_INLAND_PROVINCE_FILENAME = "./mapstest/singleInlandProvince.dip";
 	private static final Aliases EMPTY_ALIASES = new Aliases(new BracketedCSVScanner("()"));
 	private static final Neighbours EMPTY_NEIGHBOURS = new Neighbours(new BracketedCSVScanner("()"));
 
