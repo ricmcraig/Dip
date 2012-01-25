@@ -66,6 +66,15 @@ public class DipMap {
 		return Collections.unmodifiableSet(coastalProvinces);
 	}
 
+	/**
+	 * 	
+	 * @param the Identifier of the Province 
+	 * @return the Province with the given Identifier, or null if it does not exist. 
+	 */
+		public Province getProvince(Identifier id){
+			return dipMap.get(id);
+		}
+
 	private void addProvince(Province province){
 		dipMap.put(province.getIdentifier(), province);
 		switch(province.getType()) { 
