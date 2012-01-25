@@ -112,10 +112,9 @@ public class PowersTest {
 		assertEquals("None power formed correctly from String", Powers.NONE, p);
 	}
 
-	@Test(expected=IllegalArgumentException.class)
+	@Test(expected=PowersFormatException.class)
 	public void getPowerFromBadString() {
-		@SuppressWarnings("unused")
-		Powers p = Powers.getPower("X");
+		Powers.getPower("X");
 	}
 
 }

@@ -11,7 +11,7 @@ public class SupplyTest {
 	private static final int NONE_VALUE = 0;
 	private static final String ONE_STRING = "SC";
 	private static final int ONE_VALUE = 1;
-	
+
 	@Test
 	public void supplyNoneHasCorrectID() {
 		Supply s = Supply.NONE;
@@ -48,10 +48,9 @@ public class SupplyTest {
 		assertEquals("One has correct value", ONE_VALUE, s.getSupplyValue());
 	}
 
-	@Test(expected=IllegalArgumentException.class)
+	@Test(expected = SupplyFormatException.class)
 	public void getSupplyFromBadString() {
-		@SuppressWarnings("unused")
-		Supply s = Supply.getSupply("X");
+		Supply.getSupply("X");
 	}
 
 }

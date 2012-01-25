@@ -42,10 +42,9 @@ public class TerrainsTest {
 		assertEquals("Should be type INLAND", Terrains.INLAND, t);
 	}
 
-	@Test(expected=IllegalArgumentException.class)
-	public void setStringTerrainBad() {
-		@SuppressWarnings("unused")
-		Terrains t = Terrains.getTerrain("X");
+	@Test(expected=TerrainsFormatException.class)
+	public void getTerrainFromBadString() {
+		Terrains.getTerrain("X");
 	}
 
 }
