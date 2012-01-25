@@ -1,32 +1,32 @@
 1901F
 #Austria-Hungary
-F TRI to ALB
-A VIE to TRI
-A BUD to SER
+A F TRI to ALB
+A A VIE to TRI
+A A BUD to SER
 #England
-F LON to ENG
-F EDI to NTS
-A LPL to YOR
+E F LON to ENG
+E F EDI to NTS
+E A LPL to YOR
 #France
-F BRE to ENG
-A PAR to BUR
-A MAR to SPA
+F F BRE to ENG
+F A PAR to BUR
+F A MAR to SPA
 #Germany
-F KIE to DEN
-A BER to KIE
-A MUN to RUH
+G F KIE to DEN
+G A BER to KIE
+G A MUN to RUH
 #Italy
-F NAP to ION
-A VEN to PIE
-A ROM to APU
+I F NAP to ION
+I A VEN to PIE
+I A ROM to APU
 #Russia
-F STP(SC) to GOB
-F SEV to BLA
-A WAR to GAL
-A MOS to UKR
+R F STP(SC) to GOB
+R F SEV to BLA
+R A WAR to GAL
+R A MOS to UKR
 #Turkey
-F ANK to BLA
-A CON to BUL
-A SMY to CON
+T F ANK to BLA
+T A CON to BUL
+T A SMY to CON
 
 

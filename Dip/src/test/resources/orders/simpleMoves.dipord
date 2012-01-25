@@ -1,0 +1,31 @@
+1901F
+#Austria-Hungary Army
+A A VIE to TRI
+#Austria-Hungary Fleet
+A F TRI to ALB
+# England Army
+E A LPL to YOR
+# England Fleet
+E F EDI to NTS
+# France Army
+F A PAR to BUR
+# France Fleet
+F F BRE to ENG
+#Germany Army
+G A BER to KIE
+#Germany Fleet
+G F KIE to DEN
+#Italy Army
+I A VEN to PIE
+#Italy Fleet
+I F NAP to ION
+#Russia Army
+R A WAR to GAL
+#Russia Fleet
+R F STP(SC) to GOB
+#Turkey Army
+T A CON to BUL
+#Turkey Fleet
+T F ANK to BLA
+
+

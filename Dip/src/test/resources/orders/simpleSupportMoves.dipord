@@ -1,0 +1,31 @@
+1902F
+#Austria-Hungary Army
+A A VIE sup A BUD to GAL
+#Austria-Hungary Fleet
+A F ADR sup A VEN to APU
+# England Army
+E A YOR sup F WAL to LON
+# England Fleet
+E F EDI sup F NTS to NWS
+# France Army
+F A PAR sup A BUR to PIC
+# France Fleet
+F F BRE sup F ENG to MAO
+#Germany Army
+G A BER sup A PRU to SIL
+#Germany Fleet
+G F KIE sup A RUH to HOL
+#Italy Army
+I A VEN sup A PIE to TYL
+#Italy Fleet
+I F NAP sup A APU to ROM
+#Russia Army
+R A WAR sup A UKR to GAL
+#Russia Fleet
+R F STP(SC) sup F LVN to GOB
+#Turkey Army
+T A CON sup A SMY to ANK
+#Turkey Fleet
+T F BLA sup A BUL to RUM
+
+

@@ -1,0 +1,31 @@
+1901F
+#Austria-Hungary Army
+A A VIE sup A BUD to GAL
+#Austria-Hungary Fleet
+A F TRI A hold
+# England Army
+E A LPL hold
+# England Fleet
+E F EDI hold
+# France Army
+F A PAR hold
+# France Fleet
+F F BRE hold
+#Germany Army
+G A BER hold
+#Germany Fleet
+G F KIE hold
+#Italy Army
+I A VEN hold
+#Italy Fleet
+I F NAP hold
+#Russia Army
+R A WAR hold
+#Russia Fleet
+R F STP(SC) hold
+#Turkey Army
+T A CON hold
+#Turkey Fleet
+T F ANK hold
+
+

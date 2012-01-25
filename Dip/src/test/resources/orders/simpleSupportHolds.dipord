@@ -1,0 +1,31 @@
+1902F
+#Austria-Hungary Army
+A A VIE sup A BUD hold
+#Austria-Hungary Fleet
+A F TRI sup A VEN hold
+# England Army
+E A LPL sup F WAL hold
+# England Fleet
+E F EDI sup F NTS hold
+# France Army
+F A PAR sup A BUR hold
+# France Fleet
+F F BRE sup F ENG hold
+#Germany Army
+G A BER sup A PRU hold
+#Germany Fleet
+G F KIE sup A DEN hold
+#Italy Army
+I A VEN sup F TRI hold
+#Italy Fleet
+I F NAP sup A APU hold
+#Russia Army
+R A WAR sup A UKR hold
+#Russia Fleet
+R F STP(SC) sup A LVN hold
+#Turkey Army
+T A CON sup A BUL hold
+#Turkey Fleet
+T F ANK sup A ARM hold
+
+
