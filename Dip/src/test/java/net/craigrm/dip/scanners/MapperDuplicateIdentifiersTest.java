@@ -6,7 +6,7 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.Collection;
 
-import net.craigrm.dip.map.DuplicateIdentifierException;
+import net.craigrm.dip.map.DuplicateProvinceIdentifierException;
 import net.craigrm.dip.map.MapDefinitionException;
 
 import org.junit.Test;
@@ -38,7 +38,7 @@ public class MapperDuplicateIdentifiersTest {
 	}
 
 	@Parameters
-	public static Collection<Object[]> getTestParams(){
+	public static Collection<Object[]> getTestParams() {
 		return Arrays.asList(new Object[][]{
 			{new File(DUPLICATE_PROVINCE_MAP_FILENAME), DUPLICATE_PROVINCE_LINE_NUMBER, DUPLICATE_IDENTIFIER_NAME},
 			{new File(DUPLICATE_ALIAS_MAP_FILENAME), DUPLICATE_ALIAS_LINE_NUMBER, DUPLICATE_IDENTIFIER_NAME},
@@ -47,21 +47,22 @@ public class MapperDuplicateIdentifiersTest {
 	}
 	
 	@Test
-	public void duplicateNeighbourMap() {
+	public void duplicateIdentifierMap() {
 		boolean mdeCaught = false;
 		try {
 			new StandardMapper(inputTestMapFile);
 		}
-		catch (MapDefinitionException mde){
+		catch (MapDefinitionException mde) {
 			mdeCaught = true;
 			assertEquals("Definition Identifier", inputTestMapFile.getAbsolutePath(), mde.getMapDefinitionIdentifier());
 			assertEquals("Record Number", expectedRecordNumber, mde.getRecordNumber());
-			assertEquals("Underlying cause", DuplicateIdentifierException.class, mde.getCause().getClass());
-			DuplicateIdentifierException cause = (DuplicateIdentifierException)mde.getCause();
-			assertEquals("Duplicate Alias", expectedDuplicateIdentifierName, cause.getDuplicateIdentifier());
+			assertEquals("Underlying cause", DuplicateProvinceIdentifierException.class, mde.getCause().getClass());
+			DuplicateProvinceIdentifierException cause = (DuplicateProvinceIdentifierException)mde.getCause();
+			assertEquals("Duplicate Identifier", expectedDuplicateIdentifierName, cause.getDuplicateIdentifier());
 		}
-		if (!mdeCaught)
+		if (!mdeCaught) {
 			fail("Expected to catch MapDefinitionException");
+		}
 	}
 
 }

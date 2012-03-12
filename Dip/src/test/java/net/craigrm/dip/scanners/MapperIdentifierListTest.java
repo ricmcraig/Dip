@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import net.craigrm.dip.map.DipMap;
-import net.craigrm.dip.map.Identifier;
+import net.craigrm.dip.map.ProvinceIdentifier;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -40,7 +40,7 @@ public class MapperIdentifierListTest {
 	}
 
 	@Parameters
-	public static Collection<Object[]> getTestParams(){
+	public static Collection<Object[]> getTestParams() {
 		return Arrays.asList(new Object[][]{
 			{new File(NO_ALIAS_MAP_FILENAME), IDENTIFIER_NAME},
 			{new File(NO_NEIGHBOUR_MAP_FILENAME), IDENTIFIER_NAME},
@@ -54,7 +54,8 @@ public class MapperIdentifierListTest {
 	@Test
 	public void getProvinceWithIdentifierList() {
 		StandardMapper standardMapper = new StandardMapper(inputTestMapFile);
-		DipMap dipMap = new DipMap(standardMapper);
-		assertNotNull("Check province",dipMap.getProvince(new Identifier(expectedProvinceIdentifierName)));
+		DipMap.makeMap(standardMapper);
+		DipMap dm = DipMap.getMap();
+		assertNotNull("Check province",dm.getProvince(new ProvinceIdentifier(expectedProvinceIdentifierName)));
 	}
 }
