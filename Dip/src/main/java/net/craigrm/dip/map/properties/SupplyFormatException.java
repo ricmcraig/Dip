@@ -4,20 +4,27 @@ public class SupplyFormatException extends IllegalArgumentException {
 
 	private static final long serialVersionUID = 0L;
 
-	public SupplyFormatException() {
-		super();
+	private final String supply;
+	private final String expected;
+	
+	public SupplyFormatException(String supply, String expected) {
+		super("Supply: " + supply + ". Expected: " + expected + ". ");
+		this.supply = supply;
+		this.expected = expected;
 	}
 
-	public SupplyFormatException(String s) {
-		super(s);
+	public SupplyFormatException(String supply, String expected, Throwable cause) {
+		super("Supply: " + supply + ". Expected: " + expected + ". ", cause);
+		this.supply = supply;
+		this.expected = expected;
 	}
 
-	public SupplyFormatException(Throwable cause) {
-		super(cause);
+	public String getSupply() {
+		return supply;
 	}
 
-	public SupplyFormatException(String message, Throwable cause) {
-		super(message, cause);
+	public String getExpected() {
+		return expected;
 	}
 
 }

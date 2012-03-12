@@ -1,31 +1,52 @@
 package net.craigrm.dip.state.properties;
 
+import java.util.Arrays;
+import java.util.List;
+
+import net.craigrm.dip.map.properties.Terrains;
+
 public enum UnitType {
-	ARMY("A"),
-	FLEET("F"),
+	ARMY("A", Terrains.COAST, Terrains.INLAND),
+	FLEET("F", Terrains.COAST, Terrains.SEA),
 	NONE("");
 
-	private static String expectedMessage = "Expected value of \"A\" or \"F\". ";
+	private static final String EXPECTED_FORMAT = "\"A\" or \"F\"";
 	
-	private String unitType;
+	private final String unitType;
+	private final List<Terrains> validTerrains;
 	
-	public static UnitType getType(String type){
+	public static UnitType getType(String type) {
 		String trimmedType = type.trim();
 		
-		for(UnitType t: UnitType.values()){
-			if (t.getType().equalsIgnoreCase(trimmedType)){
+		for(UnitType t: UnitType.values()) {
+			if (t.getType().equalsIgnoreCase(trimmedType)) {
 				return t;
 			}
 		}
-		throw new UnitTypeFormatException(UnitType.expectedMessage + "Got: " + trimmedType);
+		throw new UnitTypeFormatException(trimmedType, EXPECTED_FORMAT);
 	}
 
-	public String getType(){
+	public static boolean isValidType(String type) {
+		String trimmedType = type.trim();
+		
+		for(UnitType t: UnitType.values()) {
+			if (t.getType().equalsIgnoreCase(trimmedType)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public String getType() {
 		return this.unitType;
 	}
 
-	private UnitType(String unitType){
-		this.unitType = unitType;
+	public boolean isValidTerrain(Terrains t) {
+		return validTerrains.contains(t);
 	}
 
+	private UnitType(String unitType, Terrains... validTerrains ) {
+		this.unitType = unitType;
+		this.validTerrains = Arrays.asList(validTerrains);
+	}
 }

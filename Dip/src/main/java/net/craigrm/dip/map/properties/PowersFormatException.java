@@ -4,20 +4,27 @@ public class PowersFormatException extends IllegalArgumentException {
 
 	private static final long serialVersionUID = 0L;
 
-	public PowersFormatException() {
-		super();
+	private final String power;
+	private final String expected;
+	
+	public PowersFormatException(String power, String expected) {
+		super("Power: " + power + ". Expected: " + expected + ". ");
+		this.power = power;
+		this.expected = expected;
 	}
 
-	public PowersFormatException(String s) {
-		super(s);
+	public PowersFormatException(String power, String expected, Throwable cause) {
+		super("Power: " + power + ". Expected: " + expected + ". ", cause);
+		this.power = power;
+		this.expected = expected;
 	}
 
-	public PowersFormatException(Throwable cause) {
-		super(cause);
+	public String getPower() {
+		return power;
 	}
 
-	public PowersFormatException(String message, Throwable cause) {
-		super(message, cause);
+	public String getExpected() {
+		return expected;
 	}
 
 }

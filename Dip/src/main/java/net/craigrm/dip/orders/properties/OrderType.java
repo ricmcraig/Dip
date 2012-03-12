@@ -7,26 +7,26 @@ public enum OrderType {
 	SUPPORT("sup"),
 	CONVOY("con");
 	
-	private static String expectedMessage = "Expected value of \"to\", \"hold\", \"sup\" or \"con\".";
+	private static String expectedMessage = "\"to\", \"hold\", \"sup\" or \"con\"";
 	
 	private String type;
 	
-	OrderType(String type){
+	OrderType(String type) {
 		this.type = type; 
 	}
 	
-	public static OrderType getOrderType (String orderType){
+	public static OrderType getOrderType (String orderType) {
 		String trimmedOrderType = orderType.trim();
 		
-		for (OrderType o: OrderType.values()){
-			if (o.getType().equalsIgnoreCase(trimmedOrderType)){
+		for (OrderType o: OrderType.values()) {
+			if (o.getType().equalsIgnoreCase(trimmedOrderType)) {
 				return o;
 			}
 		}
-		throw new OrderTypeFormatException(OrderType.expectedMessage + "Got: " + trimmedOrderType);
+		throw new OrderTypeFormatException(trimmedOrderType, OrderType.expectedMessage);
 	}
 
-	public String getType(){
+	public String getType() {
 		return this.type;
 	}
 	

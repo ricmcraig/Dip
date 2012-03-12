@@ -3,21 +3,28 @@ package net.craigrm.dip.map.properties;
 public class TerrainsFormatException extends IllegalArgumentException {
 
 	private static final long serialVersionUID = 0L;
-
-	public TerrainsFormatException() {
-		super();
+	
+	private final String terrain;
+	private final String expected; 
+	
+	public TerrainsFormatException(String terrain, String expected) {
+		super("Terrain: " + terrain + ". Expected: " + expected + ". ");
+		this.terrain = terrain;
+		this.expected = expected;
 	}
 
-	public TerrainsFormatException(String s) {
-		super(s);
+	public TerrainsFormatException(String terrain, String expected, Throwable cause) {
+		super("Terrain: " + terrain + ". Expected: " + expected + ". ", cause);
+		this.terrain = terrain;
+		this.expected = expected;
 	}
 
-	public TerrainsFormatException(Throwable cause) {
-		super(cause);
+	public String getTerrain() {
+		return terrain;
 	}
 
-	public TerrainsFormatException(String message, Throwable cause) {
-		super(message, cause);
+	public String getExpected() {
+		return expected;
 	}
 
 }

@@ -5,29 +5,29 @@ public final class Year {
 	
 	private final int yearNumber;
 
-	public Year(String yearString){
-		try{
+	public Year(String yearString) {
+		try {
 			this.yearNumber = Integer.parseInt(yearString);
 		}
-		catch (NumberFormatException nfe){
-			throw new YearFormatException();
+		catch (NumberFormatException nfe) {
+			throw new YearFormatException(yearString);
 		}
 	}
 
-	private Year(int yearNumber){
+	private Year(int yearNumber) {
 		this.yearNumber = yearNumber;
 	}
 
-	public Year next(){
+	public Year next() {
 		return new Year(yearNumber + 1);
 	}
 
-	public int getYearNumber(){
+	public int getYearNumber() {
 		return yearNumber;
 	}
 	 
 	@Override
-	public String toString(){
+	public String toString() {
 		return String.valueOf(yearNumber);
 	}
 
@@ -39,12 +39,15 @@ public final class Year {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
+		}
 		Year other = (Year) obj;
 		return yearNumber == other.yearNumber;
 	}

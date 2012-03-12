@@ -2,21 +2,23 @@ package net.craigrm.dip.state.properties;
 
 
 public enum Season {
-	SPRING("S"), FALL("F");
+	SPRING("S", false), 
+	FALL("F", true);
 	
-	private static String expectedMessage = "Expected value of \"S\" or \"F\". ";
+	private static final String EXPECTED_FORMAT = "\"S\" or \"F\"";
 	
 	private String seasonID;
+	private boolean isAdjustmentSeason;
 	
-	public static Season getSeason (String season){
+	public static Season getSeason (String season) {
 		String trimmedSeason = season.trim();
 		
-		for (Season s: Season.values()){
-			if (s.getSeasonID().equalsIgnoreCase(trimmedSeason)){
+		for (Season s: Season.values()) {
+			if (s.getSeasonID().equalsIgnoreCase(trimmedSeason)) {
 				return s;
 			}
 		}
-		throw new SeasonFormatException(Season.expectedMessage + "Got: " + trimmedSeason);
+		throw new SeasonFormatException(EXPECTED_FORMAT , trimmedSeason);
 	}
 
 	/**
@@ -24,17 +26,26 @@ public enum Season {
 	 * {@code Season} if this is the last.
 	 * 
 	 */
-	public Season next(){
+	public Season next() {
 		int nextOrdinalValue = (this.ordinal()+1) % Season.values().length;
 		return Season.values()[nextOrdinalValue];
 	}
 	
-	public String getSeasonID(){
+	public String getSeasonID() {
 		return this.seasonID;
 	}
 
-	private Season (String seasonID){
+	public boolean isAdjustmentSeason() {
+		return isAdjustmentSeason;
+	}
+
+	public void setAdjustmentSeason(boolean isAdjustmentSeason) {
+		this.isAdjustmentSeason = isAdjustmentSeason;
+	}
+
+	private Season (String seasonID, boolean isAdjustmentSeason) {
 		this.seasonID = seasonID;
+		this.isAdjustmentSeason = isAdjustmentSeason;
 	}
 	
 

@@ -4,20 +4,27 @@ public class OrderTypeFormatException extends IllegalArgumentException {
 
 	private static final long serialVersionUID = 0L;
 
-	public OrderTypeFormatException() {
-		super();
+	private final String orderType;
+	private final String expected;
+
+	public OrderTypeFormatException(String orderType, String expected) {
+		super("Order Type: " + orderType + ". Expected: " + expected + ". ");
+		this.orderType = orderType;
+		this.expected = expected;
 	}
 
-	public OrderTypeFormatException(String s) {
-		super(s);
+	public OrderTypeFormatException(String orderType, String expected, Throwable cause) {
+		super("Order Type: " + orderType + ". Expected: " + expected + ". ", cause);
+		this.orderType = orderType;
+		this.expected = expected;
 	}
 
-	public OrderTypeFormatException(Throwable cause) {
-		super(cause);
+	public String getOrderType() {
+		return orderType;
 	}
 
-	public OrderTypeFormatException(String message, Throwable cause) {
-		super(message, cause);
+	public String getExpected() {
+		return expected;
 	}
 
 }

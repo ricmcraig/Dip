@@ -4,20 +4,27 @@ public class SeasonFormatException extends IllegalArgumentException {
 
 	private static final long serialVersionUID = 0L;
 
-	public SeasonFormatException() {
-		super();
+	private final String season; 
+	private final String expected; 
+	
+	public SeasonFormatException(String season, String expected) {
+		super("Season: " + season + ". Expected: " + expected);
+		this.season = season;
+		this.expected = expected;
 	}
 
-	public SeasonFormatException(String s) {
-		super(s);
+	public SeasonFormatException(String expected, String season, Throwable cause) {
+		super("Season: " + season + ". Expected: " + expected, cause);
+		this.season = season;
+		this.expected = expected;
 	}
 
-	public SeasonFormatException(Throwable cause) {
-		super(cause);
+	public String getSeason() {
+		return season;
 	}
 
-	public SeasonFormatException(String message, Throwable cause) {
-		super(message, cause);
+	public String getExpected() {
+		return expected;
 	}
 
 }
