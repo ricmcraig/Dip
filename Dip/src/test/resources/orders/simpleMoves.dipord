@@ -1,31 +1,38 @@
-1901F
+=1901S
+-Austria-Hungary
 #Austria-Hungary Army
-A A VIE to TRI
+A VIE to TRI
 #Austria-Hungary Fleet
-A F TRI to ALB
-# England Army
-E A LPL to YOR
-# England Fleet
-E F EDI to NTS
-# France Army
-F A PAR to BUR
-# France Fleet
-F F BRE to ENG
+F TRI to ALB
+-England
+#England Army
+A LPL to YOR
+#England Fleet
+F EDI to NTS
+-France
+#France Army
+A PAR to BUR
+#France Fleet
+F BRE to ENG
+-Germany
 #Germany Army
-G A BER to KIE
+A BER to KIE
 #Germany Fleet
-G F KIE to DEN
+F KIE to DEN
+-Italy
 #Italy Army
-I A VEN to PIE
+A VEN to PIE
 #Italy Fleet
-I F NAP to ION
+F NAP to ION
+-Russia
 #Russia Army
-R A WAR to GAL
+A WAR to GAL
 #Russia Fleet
-R F STP(SC) to GOB
+F STP(SC) to GOB
+-Turkey
 #Turkey Army
-T A CON to BUL
+A CON to BUL
 #Turkey Fleet
-T F ANK to BLA
+F ANK to BLA
 
 

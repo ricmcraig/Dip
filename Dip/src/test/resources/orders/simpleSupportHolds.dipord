@@ -1,31 +1,38 @@
-1902F
+=1901S
+-Austria-Hungary
 #Austria-Hungary Army
-A A VIE sup A BUD hold
+A VIE sup A BUD hold
 #Austria-Hungary Fleet
-A F TRI sup A VEN hold
-# England Army
-E A LPL sup F WAL hold
-# England Fleet
-E F EDI sup F NTS hold
-# France Army
-F A PAR sup A BUR hold
-# France Fleet
-F F BRE sup F ENG hold
+F TRI sup A VEN hold
+-England
+#England Army
+A LPL sup F WAL hold
+#England Fleet
+F EDI sup F NTS hold
+-France
+#France Army
+A PAR sup A BUR hold
+#France Fleet
+F BRE sup F ENG hold
+-Germany
 #Germany Army
-G A BER sup A PRU hold
+A BER sup A PRU hold
 #Germany Fleet
-G F KIE sup A DEN hold
+F KIE sup A DEN hold
+-Italy
 #Italy Army
-I A VEN sup F TRI hold
+A VEN sup F TRI hold
 #Italy Fleet
-I F NAP sup A APU hold
+F NAP sup A APU hold
+-Russia
 #Russia Army
-R A WAR sup A UKR hold
+A WAR sup A UKR hold
 #Russia Fleet
-R F STP(SC) sup A LVN hold
+F STP(SC) sup A LVN hold
+-Turkey
 #Turkey Army
-T A CON sup A BUL hold
+A CON sup A BUL hold
 #Turkey Fleet
-T F ANK sup A ARM hold
+F ANK sup A ARM hold
 
 
