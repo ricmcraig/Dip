@@ -25,53 +25,53 @@ public class BracketedCSVScannerTest {
 	}
 
 	@Test
-	public void passedNoBracketedCSVScanner() {
+	public void passedEmptyList() {
 		BracketedCSVScanner bcs = new BracketedCSVScanner("()");
 		assertEquals("Should be empty",0 ,bcs.getElements().length);
 	}
 
 	@Test
-	public void passedSingleIdentifierString() {
+	public void passedSingleElementString() {
 		BracketedCSVScanner bcs = new BracketedCSVScanner("(XYZ)");
 		String[] elements = bcs.getElements();
-		assertTrue("Should contain an XYZ Identifier", Arrays.asList(elements).contains("XYZ"));
+		assertTrue("Should contain an XYZ Element", Arrays.asList(elements).contains("XYZ"));
 	}
 
 	@Test
-	public void passedManyIdentifierStrings() {
+	public void passedManyElementStrings() {
 		BracketedCSVScanner bcs = new BracketedCSVScanner("(ABC,DEF,GHI,JKL)");
 		String[] elements = bcs.getElements();
-		assertTrue("Should contain an ABC Identifier", Arrays.asList(elements).contains("ABC"));
-		assertTrue("Should contain a DEF Identifier", Arrays.asList(elements).contains("DEF"));
-		assertTrue("Should contain a GHI Identifier", Arrays.asList(elements).contains("GHI"));
-		assertTrue("Should contain a JKL Identifier", Arrays.asList(elements).contains("JKL"));
+		assertTrue("Should contain an ABC Element", Arrays.asList(elements).contains("ABC"));
+		assertTrue("Should contain a DEF Element", Arrays.asList(elements).contains("DEF"));
+		assertTrue("Should contain a GHI Element", Arrays.asList(elements).contains("GHI"));
+		assertTrue("Should contain a JKL Element", Arrays.asList(elements).contains("JKL"));
 	}
 
 	@Test
-	public void passedManyIdentifierStringsWithWhiteSpace() {
+	public void passedManyElementStringsWithWhiteSpace() {
 		BracketedCSVScanner bcs = new BracketedCSVScanner("( ABC, DEF ,GHI,  JKL  )");
 		String[] elements = bcs.getElements();
-		assertTrue("Should contain an ABC Identifier", Arrays.asList(elements).contains(" ABC"));
-		assertTrue("Should contain a DEF Identifier", Arrays.asList(elements).contains(" DEF "));
-		assertTrue("Should contain a GHI Identifier", Arrays.asList(elements).contains("GHI"));
-		assertTrue("Should contain a JKL Identifier", Arrays.asList(elements).contains("  JKL  "));
+		assertTrue("Should contain an ABC Element", Arrays.asList(elements).contains(" ABC"));
+		assertTrue("Should contain a DEF Element", Arrays.asList(elements).contains(" DEF "));
+		assertTrue("Should contain a GHI Element", Arrays.asList(elements).contains("GHI"));
+		assertTrue("Should contain a JKL Element", Arrays.asList(elements).contains("  JKL  "));
 	}
 
 	@Test
-	public void passedSingleCoastalIdentifierStrings() {
+	public void passedSingleElementStringWithBrackets() {
 		BracketedCSVScanner bcs = new BracketedCSVScanner("(XYZ(NC))");
 		String[] elements = bcs.getElements();
-		assertTrue("Should contain an ABC Identifier", Arrays.asList(elements).contains("XYZ(NC)"));
+		assertTrue("Should contain an ABC Element", Arrays.asList(elements).contains("XYZ(NC)"));
 	}
 
 	@Test
-	public void passedManyCoastalIdentifierStrings() {
+	public void passedManyElementStringsWithBrackets() {
 		BracketedCSVScanner bcs = new BracketedCSVScanner("( ABC(NC), DEF(EC) ,GHI(SC),  JKL(WC)  )");
 		String[] elements = bcs.getElements();
-		assertTrue("Should contain an ABC Identifier", Arrays.asList(elements).contains(" ABC(NC)"));
-		assertTrue("Should contain a DEF Identifier", Arrays.asList(elements).contains(" DEF(EC) "));
-		assertTrue("Should contain a GHI Identifier", Arrays.asList(elements).contains("GHI(SC)"));
-		assertTrue("Should contain a JKL Identifier", Arrays.asList(elements).contains("  JKL(WC)  "));
+		assertTrue("Should contain an ABC Element", Arrays.asList(elements).contains(" ABC(NC)"));
+		assertTrue("Should contain a DEF Element", Arrays.asList(elements).contains(" DEF(EC) "));
+		assertTrue("Should contain a GHI Element", Arrays.asList(elements).contains("GHI(SC)"));
+		assertTrue("Should contain a JKL Element", Arrays.asList(elements).contains("  JKL(WC)  "));
 	}
 
 }
