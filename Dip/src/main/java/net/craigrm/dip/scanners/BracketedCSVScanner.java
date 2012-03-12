@@ -2,8 +2,6 @@ package net.craigrm.dip.scanners;
 
 import java.util.Arrays;
 
-import net.craigrm.dip.map.IBracketedCSVScanner;
-
 public final class BracketedCSVScanner implements IBracketedCSVScanner {
 
 	private static final String EMPTY_LIST_REGEX = "\\(\\s*\\)";
@@ -11,7 +9,7 @@ public final class BracketedCSVScanner implements IBracketedCSVScanner {
 	
 	private final String[] elements;
 
-	public BracketedCSVScanner(String scanString){
+	public BracketedCSVScanner(String scanString) {
 		if (scanString == null) {
 			throw new IllegalArgumentException("Wrong format scan string: null");
 		}
@@ -35,7 +33,7 @@ public final class BracketedCSVScanner implements IBracketedCSVScanner {
 		elements = trimmedScanString.substring(1, trimmedScanString.length()-1).split(CSV_SEPARATOR_REGEX);
 	}
 	
-	public String[] getElements(){
+	public String[] getElements() {
 		return Arrays.copyOf(elements, elements.length);
 	}
 
