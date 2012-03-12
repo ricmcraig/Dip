@@ -14,7 +14,6 @@ public class PowersTest {
 	private static final String ITALY_STRING = "I";
 	private static final String RUSSIA_STRING = "R";
 	private static final String TURKEY_STRING = "T";
-	private static final String NONE_STRING = "";
 
 	@Test
 	public void powerAustriaHungaryHasCorrectID() {
@@ -24,7 +23,7 @@ public class PowersTest {
 
 	@Test
 	public void getPowerFromAustriaHungaryString() {
-		Powers p = Powers.getPower(AUSTRIA_HUNGARY_STRING);
+		Powers p = Powers.getPowerFromID(AUSTRIA_HUNGARY_STRING);
 		assertEquals("Austria-Hungary power formed correctly from String", Powers.AUSTRIAHUNGARY, p);
 	}
 
@@ -36,7 +35,7 @@ public class PowersTest {
 
 	@Test
 	public void getPowerFromEnglandString() {
-		Powers p = Powers.getPower(ENGLAND_STRING);
+		Powers p = Powers.getPowerFromID(ENGLAND_STRING);
 		assertEquals("England power formed correctly from String", Powers.ENGLAND, p);
 	}
 
@@ -48,7 +47,7 @@ public class PowersTest {
 
 	@Test
 	public void getPowerFromFranceString() {
-		Powers p = Powers.getPower(FRANCE_STRING);
+		Powers p = Powers.getPowerFromID(FRANCE_STRING);
 		assertEquals("France power formed correctly from String", Powers.FRANCE, p);
 	}
 
@@ -60,7 +59,7 @@ public class PowersTest {
 
 	@Test
 	public void getPowerFromGermanyString() {
-		Powers p = Powers.getPower(GERMANY_STRING);
+		Powers p = Powers.getPowerFromID(GERMANY_STRING);
 		assertEquals("Germany power formed correctly from String", Powers.GERMANY, p);
 	}
 
@@ -72,7 +71,7 @@ public class PowersTest {
 
 	@Test
 	public void getPowerFromItalyString() {
-		Powers p = Powers.getPower(ITALY_STRING);
+		Powers p = Powers.getPowerFromID(ITALY_STRING);
 		assertEquals("Italy power formed correctly from String", Powers.ITALY, p);
 	}
 
@@ -84,7 +83,7 @@ public class PowersTest {
 
 	@Test
 	public void getPowerFromRussiaString() {
-		Powers p = Powers.getPower(RUSSIA_STRING);
+		Powers p = Powers.getPowerFromID(RUSSIA_STRING);
 		assertEquals("Russia power formed correctly from String", Powers.RUSSIA, p);
 	}
 
@@ -96,25 +95,13 @@ public class PowersTest {
 
 	@Test
 	public void getPowerFromTurkeyString() {
-		Powers p = Powers.getPower(TURKEY_STRING);
+		Powers p = Powers.getPowerFromID(TURKEY_STRING);
 		assertEquals("Turkey power formed correctly from String", Powers.TURKEY, p);
-	}
-
-	@Test
-	public void powerNoneHasCorrectID() {
-		Powers p = Powers.NONE;
-		assertEquals("None has correct ID", NONE_STRING, p.getPowerID());
-	}
-
-	@Test
-	public void getPowerFromNoneString() {
-		Powers p = Powers.getPower(NONE_STRING);
-		assertEquals("None power formed correctly from String", Powers.NONE, p);
 	}
 
 	@Test(expected=PowersFormatException.class)
 	public void getPowerFromBadString() {
-		Powers.getPower("X");
+		Powers.getPowerFromID("X");
 	}
 
 }
