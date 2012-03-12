@@ -55,7 +55,7 @@ public class MapperMissingElementsTest {
 	}
 
 	@Parameters
-	public static Collection<Object[]> getTestParams(){
+	public static Collection<Object[]> getTestParams() {
 		return Arrays.asList(new Object[][]{
 			{new File(MISSING_IDENTIFIER_MAP_FILENAME), MISSING_IDENTIFIER_LINE_NUMBER, MISSING_ELEMENT_IDENTIFIER},
 			{new File(MISSING_TERRAIN_MAP_FILENAME), MISSING_TERRAIN_LINE_NUMBER, MISSING_ELEMENT_TERRAIN},
@@ -68,13 +68,13 @@ public class MapperMissingElementsTest {
 	}
 	
 	@Test
-	public void testMissingElement(){
+	public void testMissingElement() {
 		boolean mdeCaught = false;
 		File mapFile = inputTestMapFile;
 		try {
 			new StandardMapper(mapFile);
 		}
-		catch (MapDefinitionException mde){
+		catch (MapDefinitionException mde) {
 			mdeCaught = true;
 			assertEquals("Definition Identifier", mapFile.getAbsolutePath(), mde.getMapDefinitionIdentifier());
 			assertEquals("Record Number", expectedRecordNumber, mde.getRecordNumber());
@@ -82,7 +82,8 @@ public class MapperMissingElementsTest {
 			NoSuchMapElementException cause = (NoSuchMapElementException)mde.getCause();
 			assertEquals("Duplicate Alias", expectedMissingElementName, cause.getMissingElementName());
 		}
-		if (!mdeCaught)
+		if (!mdeCaught) {
 			fail("Expected to catch MapDefinitionException");
+		}
 	}
 }
