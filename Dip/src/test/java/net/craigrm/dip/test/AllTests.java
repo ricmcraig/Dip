@@ -4,6 +4,7 @@ import net.craigrm.dip.map.MapTests;
 import net.craigrm.dip.map.properties.MapPropertiesTests;
 import net.craigrm.dip.orders.properties.OrdersPropertiesTests;
 import net.craigrm.dip.scanners.ScannersTests;
+import net.craigrm.dip.state.properties.StatePropertiesTests;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
@@ -11,7 +12,7 @@ import org.junit.runners.Suite.SuiteClasses;
 
 
 @RunWith(Suite.class)
-@SuiteClasses({MapTests.class, MapPropertiesTests.class, OrdersPropertiesTests.class, ScannersTests.class})
+@SuiteClasses({MapTests.class, MapPropertiesTests.class, OrdersPropertiesTests.class, ScannersTests.class, StatePropertiesTests.class})
 public class AllTests {
 
 }
