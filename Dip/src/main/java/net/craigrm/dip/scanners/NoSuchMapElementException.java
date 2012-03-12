@@ -9,12 +9,7 @@ public class NoSuchMapElementException extends NoSuchElementException {
 	private final String missingElementName;
 	
 	public NoSuchMapElementException(String elName) {
-		super();
-		missingElementName = elName;
-	}
-
-	public NoSuchMapElementException(String s, String elName) {
-		super(s);
+		super("Missing element: " + elName);
 		missingElementName = elName;
 	}
 
