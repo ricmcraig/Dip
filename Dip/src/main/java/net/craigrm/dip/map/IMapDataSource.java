@@ -7,7 +7,7 @@ import java.util.Set;
  * @author Ric Craig
  *
  */
-public interface IMapper {
+public interface IMapDataSource {
 
 	/**
 	 * 
