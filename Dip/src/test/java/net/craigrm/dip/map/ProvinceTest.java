@@ -2,14 +2,13 @@ package net.craigrm.dip.map;
 
 import static org.junit.Assert.*;
 
-import net.craigrm.dip.map.Aliases;
-import net.craigrm.dip.map.Identifier;
-import net.craigrm.dip.map.Neighbours;
+import java.util.HashSet;
+
+import net.craigrm.dip.map.ProvinceIdentifier;
 import net.craigrm.dip.map.Province;
-import net.craigrm.dip.map.properties.Powers;
+import net.craigrm.dip.map.properties.Owner;
 import net.craigrm.dip.map.properties.Supply;
 import net.craigrm.dip.map.properties.Terrains;
-import net.craigrm.dip.scanners.BracketedCSVScannerStub;
 
 import org.junit.Test;
 
@@ -92,11 +91,7 @@ public class ProvinceTest {
 		assertTrue("XYZ compareTo ABC is qreater", x.compareTo(a1) > 0);
 	}
 
-	@Test(expected = DuplicateIdentifierException.class)
-	public void throwsExceptionForDuplicates() {
-		new Neighbours(new BracketedCSVScannerStub("ABC", "DEF", "GHI", "ABC"));
-	}
-		private Province makeProvince(String id) {
-		return new Province(new Identifier(id), Terrains.INLAND, Supply.NONE, Powers.NONE, id, new Aliases(new BracketedCSVScannerStub()), new Neighbours(new BracketedCSVScannerStub()));
+	private Province makeProvince(String id) {
+		return new Province(new ProvinceIdentifier(id), Terrains.INLAND, Supply.NONE, new Owner(""), id, new HashSet<ProvinceIdentifier>(), new HashSet<ProvinceIdentifier>());
 	}
 }
