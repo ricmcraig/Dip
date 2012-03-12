@@ -1,6 +1,9 @@
 package net.craigrm.dip.map;
 
-import net.craigrm.dip.map.properties.Powers;
+import java.util.Set;
+
+import net.craigrm.dip.map.properties.Owner;
+//import net.craigrm.dip.map.properties.Powers;
 import net.craigrm.dip.map.properties.Supply;
 import net.craigrm.dip.map.properties.Terrains;
 
@@ -25,13 +28,13 @@ import net.craigrm.dip.map.properties.Terrains;
  */
 public class Province implements Comparable<Province>{
 
-	private final Identifier identifier;
+	private final ProvinceIdentifier provinceIdentifier;
 	private final Terrains type;
 	private final Supply supply;
-	private final Powers owner;
+	private final Owner owner;
 	private final String fullName;
-	private final Aliases aliases;
-	private final Neighbours neighbours;
+	private final Set<ProvinceIdentifier> aliases;
+	private final Set<ProvinceIdentifier> neighbours;
 	
 	/**
 	 * Constructs an immutable Province instance
@@ -44,9 +47,9 @@ public class Province implements Comparable<Province>{
 	 * @param aliases a collection of alternative Identifiers by which this Province is known
 	 * @param neighbours a collection Identifiers of Provinces that border this one
 	 */
-	public Province(Identifier id, Terrains terrain, Supply supply, Powers owner, 
-			String fullName, Aliases aliases, Neighbours neighbours) {
-		this.identifier = id;
+	public Province(ProvinceIdentifier id, Terrains terrain, Supply supply, Owner owner, 
+			String fullName, Set<ProvinceIdentifier> aliases, Set<ProvinceIdentifier> neighbours) {
+		this.provinceIdentifier = id;
         this.type = terrain;
         this.supply = supply;
         this.owner = owner;
@@ -59,8 +62,8 @@ public class Province implements Comparable<Province>{
 	 * 
 	 * @return the canonical unique Identifier of this Province 
 	 */
-	public Identifier getIdentifier() {
-		return identifier;
+	public ProvinceIdentifier getIdentifier() {
+		return provinceIdentifier;
 	}
 
 	/**
@@ -85,7 +88,7 @@ public class Province implements Comparable<Province>{
 	 *  differ from the current controller, which is an attribute of 
 	 *  {@link net.craigrm.dip.state.TurnState}  
 	 */
-	public Powers getOwner() {
+	public Owner getOwner() {
 		return owner;
 	}
 
@@ -101,7 +104,7 @@ public class Province implements Comparable<Province>{
 	 * 
 	 * @return a collection of alternative commonly used unique Identifiers of this Province 
 	 */
-	public Aliases getAliases() {
+	public Set<ProvinceIdentifier> getAliases() {
 		return aliases;
 	}
 
@@ -109,42 +112,47 @@ public class Province implements Comparable<Province>{
 	 * 
 	 * @return a collection of Identifiers of Provinces that border this one 
 	 */
-	public Neighbours getNeighbours() {
+	public Set<ProvinceIdentifier> getNeighbours() {
 		return neighbours;
 	}
 	
 	@Override
 	public int hashCode() {
-		return ((identifier == null) ? 1 : identifier.hashCode());
+		return ((provinceIdentifier == null) ? 1 : provinceIdentifier.hashCode());
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
+		}
 		Province other = (Province) obj;
-		if (identifier == null) {
-			if (other.identifier != null)
+		if (provinceIdentifier == null) {
+			if (other.provinceIdentifier != null) {
 				return false;
-		} else if (!identifier.equals(other.identifier))
+			}
+		} else if (!provinceIdentifier.equals(other.provinceIdentifier)) {
 			return false;
+		}
 		return true;
 	}
 	
 	@Override
 	public int compareTo(Province i) {
-		return identifier.compareTo(i.getIdentifier());
+		return provinceIdentifier.compareTo(i.getIdentifier());
 	}
 	
 	@Override
-	public String toString(){
+	public String toString() {
 		final String SEPARATOR = ", ";
 		StringBuilder ps = new StringBuilder("Province:(");
-		ps.append(identifier).append(SEPARATOR);
+		ps.append(provinceIdentifier).append(SEPARATOR);
 		ps.append(type).append(SEPARATOR);
 		ps.append(supply).append(SEPARATOR);
 		ps.append(owner).append(SEPARATOR);
