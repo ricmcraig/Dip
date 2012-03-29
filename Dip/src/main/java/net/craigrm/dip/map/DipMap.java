@@ -2,6 +2,8 @@ package net.craigrm.dip.map;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -117,7 +119,7 @@ public class DipMap {
 	 * @param an Identifier of a Province, either the canonical Identifier or an alias 
 	 * @return true if the Identifier identifies a Province of the current map. 
 	 */
-		public boolean isValidIdentifier(ProvinceIdentifier id) {
+		public boolean isValidProvinceIdentifier(ProvinceIdentifier id) {
 			
 			return aliases.containsKey(id);
 		}
@@ -132,6 +134,115 @@ public class DipMap {
 		final ProvinceIdentifier canonicalId1 = aliases.get(id1);
 		final ProvinceIdentifier canonicalId2 = aliases.get(id2);
 		return map.get(canonicalId1).getNeighbours().contains(canonicalId2);
+	}
+
+	/**
+	 * Determines and returns the shortest of each alternative convoying route 
+	 * from a starting province to a destination province. Routes are composed 
+	 * of the supplied set of convoying provinces.<P>
+	 * For two routes A,B,C and A,C only A,C is returned as the two routes are 
+	 * effectively the same and A,C is the shorter.<p>
+	 * For two routes A, B, C and A, B, D, both are returned as they are 
+	 * genuinely alternative routes.    
+     * If the starting or destination is not a coastal province, an empty set 
+     * of routes is returned.<P>
+	 * Convoying provinces which are not sea provinces are ignored when 
+	 * determining possible routes. 	
+	 * 
+	 * @param an Identifier of the starting Province    
+	 * @param an Identifier of the destination Province    
+	 * @param a set of ProvinceIdentifiers from which to construct the routes 
+	 * @return a set of unique shortest alternative routes, which is empty if no 
+	 * route exists.
+	 */
+	public Set<List<ProvinceIdentifier>> getConvoyRoutes(ProvinceIdentifier startProvince, ProvinceIdentifier endProvince, Set<ProvinceIdentifier> convoyingProvinces) {
+		
+		Set<List<ProvinceIdentifier>> routes = new HashSet<List<ProvinceIdentifier>>();
+		
+		// Check for valid start and end provinces
+		if (!coastalProvinces.contains(startProvince)) {
+			return routes;
+		}
+		if (!coastalProvinces.contains(endProvince)) {
+			return routes;
+		}
+		
+		// Generate pool of valid convoying provinces identified by canonical identifier
+		Set<ProvinceIdentifier> provincePool = new HashSet<ProvinceIdentifier>();
+		for(ProvinceIdentifier provinceId:convoyingProvinces) {
+			ProvinceIdentifier canonicalId = aliases.get(provinceId);
+			if(seaProvinces.contains(canonicalId)) {
+				provincePool.add(canonicalId);
+			}
+		}
+		
+		// Check for at least one remaining convoying province
+		if (provincePool.isEmpty()) {
+			return routes;
+		}
+		
+		Set<LinkedList<ProvinceIdentifier>> potentialRoutes = new HashSet<LinkedList<ProvinceIdentifier>>();
+		LinkedList<ProvinceIdentifier> initialRoute = new LinkedList<ProvinceIdentifier>();
+		initialRoute.add(startProvince);
+		potentialRoutes.add(initialRoute);
+		
+		while (!potentialRoutes.isEmpty()) {
+			Set<LinkedList<ProvinceIdentifier>> newRoutes = new HashSet<LinkedList<ProvinceIdentifier>>();
+			Set<LinkedList<ProvinceIdentifier>> checkedRoutes = new HashSet<LinkedList<ProvinceIdentifier>>();
+			Set<ProvinceIdentifier> usedProvinces = new HashSet<ProvinceIdentifier>();
+
+			for(LinkedList<ProvinceIdentifier> potentialRoute:potentialRoutes) {
+				ProvinceIdentifier waypoint = potentialRoute.peekLast();
+				Set<ProvinceIdentifier> neighbours = map.get(waypoint).getNeighbours();
+
+				//Are we there yet?
+				if (neighbours.contains(endProvince)) {
+					potentialRoute.add(endProvince);
+					routes.add(potentialRoute);
+					checkedRoutes.add(potentialRoute);
+					//Don't need to check other neighbours at this point 
+					//because we're only interested in the shortest path 
+					//of this route
+					continue;
+				}
+
+				neighbours.retainAll(provincePool);
+				
+				//Hit a dead end?
+				if (neighbours.isEmpty()) {
+					checkedRoutes.add(potentialRoute);
+					continue;
+				}
+				
+				//Create a new route for each neighbour and remove the old route.
+				for(ProvinceIdentifier neighbour: neighbours) {
+					@SuppressWarnings("unchecked") // Clone known to be of type LinkedList<ProvinceIdentifier>
+					LinkedList<ProvinceIdentifier> newRoute = (LinkedList<ProvinceIdentifier>) potentialRoute.clone();
+					newRoute.add(neighbour);
+					newRoutes.add(newRoute);
+				}
+				
+				checkedRoutes.add(potentialRoute);
+
+				//Add neighbours to set of used provinces
+				usedProvinces.addAll(neighbours);
+			
+			}
+			//Remove any checked routes from the set of potentials.
+			//A checked route has either arrived at the destination or
+			//has hit a dead end or has split into new routes.
+			potentialRoutes.removeAll(checkedRoutes);
+
+			//Add any new routes to the set of potentials.
+			//A new route is created when an existing route is split or extended.
+			potentialRoutes.addAll(newRoutes);
+
+			//Remove any used provinces from the set of convoying provinces.
+			//This ensures we don't loop and include longer paths for routes.
+			provincePool.removeAll(usedProvinces);
+		}
+	
+		return routes;
 	}
 
 	private void addProvince(Province province) {
