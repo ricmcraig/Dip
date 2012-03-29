@@ -57,12 +57,16 @@ public class StandardOrdersParser implements IOrdersDataSource {
 		parseOrders();
 	}
 	
+	public TurnIdentifier getTurnID() {
+		return turnID;
+	}
+
 	public Set<Order> getOrders() {
 		return orders;
 	}
 
-	public TurnIdentifier getTurnID() {
-		return turnID;
+	public Set<Adjustment> getAdjustments() {
+		return adjustments;
 	}
 
 	private void parseOrders() {
