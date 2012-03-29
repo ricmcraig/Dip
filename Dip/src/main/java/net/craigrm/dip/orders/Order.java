@@ -13,14 +13,14 @@ public class Order {
 	private final boolean wellFormed;
 	private final Unit unit;
 	private final OrderType orderType;
-	private final ProvinceIdentifier destination;
+	private final ProvinceIdentifier target;
 
-	public Order(String orderText, boolean wellFormed, Unit unit, OrderType orderType, ProvinceIdentifier destination) {
+	public Order(String orderText, boolean wellFormed, Unit unit, OrderType orderType, ProvinceIdentifier target) {
 		this.orderText = orderText;
 		this.wellFormed = wellFormed;
 		this.unit = unit;
 		this.orderType = orderType;
-		this.destination = destination;
+		this.target = target;
 	}
 
 	public boolean isDuplicate(Order other) {
@@ -46,16 +46,20 @@ public class Order {
 		return orderType;
 	}
 	
-	public ProvinceIdentifier getDestination() {
-		return destination;
+	public ProvinceIdentifier getUnitPosition() {
+		return unit.getCurrentPosition();
+	}
+	
+	public ProvinceIdentifier getTarget() {
+		return target;
 	}
 	
 	public boolean hasValidStartingPosition() {
-		return DipMap.getMap().isValidIdentifier(unit.getCurrentPosition());
+		return DipMap.getMap().isValidProvinceIdentifier(unit.getCurrentPosition());
 	}
 
-	public boolean hasValidDestination() {
-		return DipMap.getMap().isValidIdentifier(destination);
+	public boolean hasValidTarget() {
+		return DipMap.getMap().isValidProvinceIdentifier(target);
 	}
 
 	@Override
