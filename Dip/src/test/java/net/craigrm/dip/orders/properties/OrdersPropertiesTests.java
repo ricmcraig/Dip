@@ -5,7 +5,7 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-@SuiteClasses({ OrderTypeTest.class })
+@SuiteClasses({ AdjustmentTypeTest.class, OrderTypeTest.class })
 public class OrdersPropertiesTests {
 
 }
