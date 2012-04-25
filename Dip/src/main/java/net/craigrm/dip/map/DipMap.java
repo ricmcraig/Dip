@@ -43,9 +43,7 @@ public class DipMap {
 	}
 
 	/**
-	 * Constructs a new DipMap instance from a mapper if there is no 
-	 * current DipMap instance. The mapper is responsible for extracting 
-	 * the Province data from a map definition of whatever form.  
+	 * Constructs a new DipMap instance from a mapper.  
 	 * 
 	 * @param mapDataSource an {@link net.craigrm.dip.map.IMapDataSource IMapper} implementation that 
 	 * extracts Province data from a map definition.
@@ -144,7 +142,7 @@ public class DipMap {
 	 * effectively the same and A,C is the shorter.<p>
 	 * For two routes A, B, C and A, B, D, both are returned as they are 
 	 * genuinely alternative routes.    
-     * If the starting or destination is not a coastal province, an empty set 
+     * If the start or destination is not a coastal province, an empty set 
      * of routes is returned.<P>
 	 * Convoying provinces which are not sea provinces are ignored when 
 	 * determining possible routes. 	
@@ -197,8 +195,10 @@ public class DipMap {
 
 				//Are we there yet?
 				if (neighbours.contains(endProvince)) {
-					potentialRoute.add(endProvince);
-					routes.add(potentialRoute);
+					@SuppressWarnings("unchecked") // Clone known to be of type LinkedList<ProvinceIdentifier>
+					LinkedList<ProvinceIdentifier> actualRoute = (LinkedList<ProvinceIdentifier>) potentialRoute.clone();
+					actualRoute.add(endProvince);
+					routes.add(actualRoute);
 					checkedRoutes.add(potentialRoute);
 					//Don't need to check other neighbours at this point 
 					//because we're only interested in the shortest path 
