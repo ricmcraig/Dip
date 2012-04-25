@@ -13,32 +13,32 @@ public class OrderTypeTest {
 
 	@Test
 	public void getOrderTypeFromMoveString() {
-		assertEquals("", OrderType.MOVE, OrderType.getOrderType(MOVE_ORDER_STRING));
+		assertEquals("Should return TO type for \"to\" string", OrderType.MOVE, OrderType.getOrderType(MOVE_ORDER_STRING));
 	}
 
 	@Test
 	public void getOrderTypeFromHoldString() {
-		assertEquals("", OrderType.HOLD, OrderType.getOrderType(HOLD_ORDER_STRING));
+		assertEquals("Should return HOLD type for \"hold\" string", OrderType.HOLD, OrderType.getOrderType(HOLD_ORDER_STRING));
 	}
 
 	@Test
 	public void getOrderTypeFromSupportString() {
-		assertEquals("", OrderType.SUPPORT, OrderType.getOrderType(SUPPORT_ORDER_STRING));
+		assertEquals("Should return SUPPORT type for \"sup\" string", OrderType.SUPPORT, OrderType.getOrderType(SUPPORT_ORDER_STRING));
 	}
 
 	@Test
 	public void getOrderTypeFromConvoyString() {
-		assertEquals("", OrderType.CONVOY, OrderType.getOrderType(CONVOY_ORDER_STRING));
+		assertEquals("Should return CONVOY type for \"con\" string", OrderType.CONVOY, OrderType.getOrderType(CONVOY_ORDER_STRING));
 	}
 
 	@Test
 	public void getOrderTypeFromMoveStringUpperCase() {
-		assertEquals("", OrderType.MOVE, OrderType.getOrderType(MOVE_ORDER_STRING.toUpperCase()));
+		assertEquals("Match should be case insensitive", OrderType.MOVE, OrderType.getOrderType(MOVE_ORDER_STRING.toUpperCase()));
 	}
 
 	@Test
 	public void getOrderTypeFromMoveStringWhiteSpace() {
-		assertEquals("", OrderType.MOVE, OrderType.getOrderType("  " + MOVE_ORDER_STRING + "\t\r\n"));
+		assertEquals("Match should ignore leading and trailing whitespace", OrderType.MOVE, OrderType.getOrderType("  " + MOVE_ORDER_STRING + "\t\r\n"));
 	}
 
 	@Test(expected=OrderTypeFormatException.class)
