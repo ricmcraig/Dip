@@ -30,7 +30,6 @@ public class TurnOrders {
 
 	//Cached subsets of orders lazily instantiated
 	private Map<OrderType, Set<Order>> ordersByType; 
-
 	
 	/**
 	 * Constructs a new TurnOrders instance from a Orders data source if there 
@@ -51,7 +50,6 @@ public class TurnOrders {
 		this.adjustments = ods.getAdjustments();
 		this.ordersByType = Collections.emptyMap(); 
 	}
-
 
 	/**
 	 * Returns turnID associated with these orders
