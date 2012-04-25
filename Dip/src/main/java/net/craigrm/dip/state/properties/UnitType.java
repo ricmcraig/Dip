@@ -19,7 +19,7 @@ public enum UnitType {
 		String trimmedType = type.trim();
 		
 		for(UnitType t: UnitType.values()) {
-			if (t.getType().equalsIgnoreCase(trimmedType)) {
+			if (t.getUnitType().equalsIgnoreCase(trimmedType)) {
 				return t;
 			}
 		}
@@ -30,14 +30,14 @@ public enum UnitType {
 		String trimmedType = type.trim();
 		
 		for(UnitType t: UnitType.values()) {
-			if (t.getType().equalsIgnoreCase(trimmedType)) {
+			if (t.getUnitType().equalsIgnoreCase(trimmedType)) {
 				return true;
 			}
 		}
 		return false;
 	}
 
-	public String getType() {
+	public String getUnitType() {
 		return this.unitType;
 	}
 
