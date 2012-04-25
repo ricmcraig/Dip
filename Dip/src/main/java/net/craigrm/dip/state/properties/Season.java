@@ -39,10 +39,6 @@ public enum Season {
 		return isAdjustmentSeason;
 	}
 
-	public void setAdjustmentSeason(boolean isAdjustmentSeason) {
-		this.isAdjustmentSeason = isAdjustmentSeason;
-	}
-
 	private Season (String seasonID, boolean isAdjustmentSeason) {
 		this.seasonID = seasonID;
 		this.isAdjustmentSeason = isAdjustmentSeason;
