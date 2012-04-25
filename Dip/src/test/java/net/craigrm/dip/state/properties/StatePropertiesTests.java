@@ -5,7 +5,7 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-@SuiteClasses({ UnitTypeTest.class })
+@SuiteClasses({ SeasonTest.class, UnitTypeTest.class, YearTest.class })
 public class StatePropertiesTests {
 
 }
