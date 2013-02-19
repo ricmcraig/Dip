@@ -148,4 +148,71 @@ public class TurnOrders {
 		
 	}
 
+	/**
+	 * Returns the supported order (if it exists) of the given supporting order
+	 * 
+	 * @param supportingOrder the supporting order 
+	 * @return the order being supported by the supporting order, or null 
+	 */
+	public static Order getOrderForSupportingOrder(SupportingOrder supportingOrder) {
+		for(Order o: turnOrders.orders) {
+			if (supportingOrder.supports(o)) {
+				return o;
+			}
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns a set of supporting orders for the given supported order
+	 * 
+	 * @param supportedOrder the supported order 
+	 * @return set of supporting orders 
+	 */
+	public static Set<SupportingOrder> getSupportingOrdersForOrder(Order supportedOrder) {
+		Set<SupportingOrder> supportingOrders = new HashSet<SupportingOrder>();
+		for(Order supportingOrder: turnOrders.orders) {
+			if (supportingOrder instanceof SupportingOrder && ((SupportingOrder)supportingOrder).supports(supportedOrder)) {
+				supportingOrders.add((SupportingOrder)supportingOrder);
+			}
+		}
+
+		return supportingOrders;
+	}
+
+	/**
+	 * Returns a set of move orders targeting a given province 
+	 * 
+	 * @param provinceId the identifier of a Province 
+	 * @return set of supporting orders 
+	 */
+	public static Set<Order> getMovesTo(ProvinceIdentifier provinceId) {
+		Set<Order> moveOrders = new HashSet<Order>();
+		for(Order order: turnOrders.orders) {
+			if (order.getOrderType() == OrderType.MOVE && order.getTarget() == provinceId) {
+				moveOrders.add(order);
+			}
+		}
+
+		return moveOrders;
+	}
+
+	/**
+	 * Returns the order for the unit at the given province (if any) 
+	 * 
+	 * @param provinceId the identifier of a Province 
+	 * @return the order, or null 
+	 */
+	public static Order getOrderFor(ProvinceIdentifier provinceId) {
+		
+		for(Order order: turnOrders.orders) {
+			if (order.getUnitPosition() == provinceId) {
+				return order;
+			}
+		}
+
+		return null;
+	}
+
 }

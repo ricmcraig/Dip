@@ -31,7 +31,7 @@ public class Outcome {
 		
 		if (!o.hasValidTarget()) {
 			orderState = OrderStatus.BADLYFORMED;
-			detail = "Invalid destination.";
+			detail = "Invalid Target.";
 			return;
 		}
 		
@@ -48,7 +48,7 @@ public class Outcome {
 		case MOVE:
 			if (!o.getUnit().canMove(o.getTarget())) {
 				orderState = OrderStatus.ILLEGAL;
-				detail = "Cannot move from current position to destination.";
+				detail = "Cannot move from current position to Target.";
 				return;
 			}
 			break;
@@ -78,7 +78,7 @@ public class Outcome {
 				} 
 				if (!supportedUnit.canMove(o.getTarget())) {
 					orderState = OrderStatus.ILLEGAL;
-					detail = "Supported unit cannot move from current position to destination.";
+					detail = "Supported unit cannot move from current position to Target.";
 					return;
 				}
 				break;
@@ -108,16 +108,11 @@ public class Outcome {
 			//TODO
 			throw new UnsupportedOperationException("Not yet implemented");
 		case MOVE:
-			//TODO
-			throw new UnsupportedOperationException("Not yet implemented");
+			orderState = getMoveOrderStatus((SupportingOrder)order, goodOrders);
 		case SUPPORT:
 			//Support fails if it is cut. Support can be successful even if
 			//the supported order fails.
-			if (isSupportCut((SupportingOrder)order, goodOrders)) {
-				orderState = OrderStatus.FAILED;
-			} else {
-				orderState = OrderStatus.SUCCESSFUL;
-			}
+			orderState = getSupportOrderStatus((SupportingOrder)order, goodOrders);
 			break;
 		case CONVOY:
 			//TODO
@@ -138,7 +133,7 @@ public class Outcome {
 		return detail;
 	}
 
-	private boolean isSupportCut(SupportingOrder order, Set<Order> orders) {
+	private OrderStatus getSupportOrderStatus(SupportingOrder order, Set<Order> orders) {
 		// Support is cut if:
 		// 1) The supporting unit is dislodged
 		// 2) The supporting unit is attacked and the supporting unit is not:
@@ -146,67 +141,102 @@ public class Outcome {
 		//   b) supporting an attack on a single point of failure on the convoy 
 		//      of the attacking unit
 		
-		//TODO This method is not accurate in some edge cases where the attacker is convoyed 
-		//and the supporting unit is supporting an action against one of the convoying units 
-		
-		//Get a collection of attack orders targeting this supporting unit 
+		// Get a collection of attack orders targeting this supporting unit 
 		ProvinceIdentifier currentPosition = order.getUnitPosition();
-		Set<Order> moveOrders = TurnOrders.getOrdersByType(OrderType.MOVE, orders);
-		Set<Order> attackedByOrders = new HashSet<Order>();
-		for(Order moveOrder: moveOrders) {
-			if (moveOrder.getTarget().equals(currentPosition)) {
-				attackedByOrders.add(moveOrder);
-			}
-		}
+		Set<Order> attackedByOrders = TurnOrders.getMovesTo(currentPosition);
 
 		// Check for no attacks.
 		if (attackedByOrders.isEmpty()) {
-			return false;
+			return OrderStatus.SUCCESSFUL;
 		}
 
-		//Check for more than one attack: guaranteed to cut support.
+		// Check for more than one attack: guaranteed to cut support.
 		if (attackedByOrders.size() > 1) {
-			return true;
+			return OrderStatus.FAILED;
 		}
 
-		//Attacked by one unit. 
-		//Check if the supporting unit is supporting an attack: if not, support is cut
+		// Attacked by one unit. 
+		// Check if the supporting unit is supporting an attack: if not, support is cut
 		if (!order.getSupportedOrderType().equals(OrderType.MOVE)) {
-			return true;
+			return OrderStatus.FAILED;
 		}
 
-		//Get attack details
-		ProvinceIdentifier supportOrderDestination = order.getTarget();
-		Order moveOrder = null;
-		for (Order o: moveOrders) { //Expecting exactly one member
-			moveOrder = o;
-		}
-
-		//Check if the supported attack is against the attacker: if it is, support is NOT cut
-		if (!supportOrderDestination.equals(moveOrder.getUnitPosition())) {
-			return false;
-		}
-			
-
-		//Check if attacker is being convoyed: if not, support is cut
-		Set<List<ProvinceIdentifier>> convoyRoutes = TurnOrders.getConvoyRoutesForOrder(moveOrder, orders);
-		if (convoyRoutes.isEmpty()) {
-			return true;
-		}
-
+		// Get supported attack details
+		ProvinceIdentifier supportOrderTarget = order.getTarget();
+		Order supportedMoveOrder = TurnOrders.getOrderForSupportingOrder(order);
 		
-		//Check if the supported attack is against a single point of failure in the convoy routes of the attacker: 
+		// Check that the supported order exists: if not, support is cut
+		if (supportedMoveOrder == null) {
+			return OrderStatus.FAILED;
+		}
+
+		// Check if the supported attack is against the attacker: if it is, support is NOT cut
+		if (!supportOrderTarget.equals(supportedMoveOrder.getUnitPosition())) {
+			return OrderStatus.SUCCESSFUL;
+		}
+
+		// Check if attacker is being convoyed: if not, support is cut
+		Set<List<ProvinceIdentifier>> convoyRoutes = TurnOrders.getConvoyRoutesForOrder(supportedMoveOrder, orders);
+		if (convoyRoutes.isEmpty()) {
+			return OrderStatus.FAILED;
+		}
+		
+		// Check if the supported attack is against a single point of failure in the convoy routes of the attacker: 
 		// if not, support is cut
 		for(List<ProvinceIdentifier> convoyRoute: convoyRoutes) {
 			if (!convoyRoute.contains(order.getTarget())) {
-				//There is at least one convoy route that is not attacked 
-				return true;
+				// There is at least one convoy route that is not attacked 
+				return OrderStatus.FAILED;
 			}
 		}
 		
 		// The supported attack is against a single point of failure in the attacking unit's convoy. The support is NOT cut.
-		return false;
+		return OrderStatus.SUCCESSFUL;
 		
 	}
 
+	private OrderStatus getMoveOrderStatus(Order moveOrder, Set<Order> orders) {
+		// Move succeeds if:
+		// 1) a. Target is empty and 
+		//    b. no other unit is attempting to move there
+		// 2) a. Target is empty and 
+		//    b. support for this moving unit is greater than support 
+		//       for each of the other unit attempting to move to this Target
+		// 3) a. Target is occupied by foreign unit and 
+		//    b. no other unit is attempting to move there and 
+		//    c. support for this moving unit is greater than for the occupying unit
+		
+		// Move fails if:
+		// 1) a. Another unit is attempting to move there with greater or equal support
+		
+		// Move status unknown if:
+		// 1) a. Target is occupied by unit that is attempting to move
+
+		
+		// Get a collection of other move orders targeting the province 
+		ProvinceIdentifier targetProvince = moveOrder.getUnitPosition();
+		Set<Order> movingOrders = TurnOrders.getMovesTo(targetProvince);
+		movingOrders.remove(moveOrder);
+
+		// Get order for occupying unit (if any)
+		Order occupyingOrder = TurnOrders.getOrderFor(targetProvince);
+		
+		// Target is empty and no competing unit
+		if (occupyingOrder == null && movingOrders.isEmpty()) {
+			return OrderStatus.SUCCESSFUL;
+		}
+		
+		// Calculate support for competing units
+		for(Order movingOrder: movingOrders) {
+			TurnOrders.getSupportingOrdersForOrder(movingOrder);
+		}
+		
+		
+		if (occupyingOrder == null && movingOrders.isEmpty()) {
+			return OrderStatus.SUCCESSFUL;
+		}
+		
+		return OrderStatus.UNKNOWN;
+		
+	}
 }
