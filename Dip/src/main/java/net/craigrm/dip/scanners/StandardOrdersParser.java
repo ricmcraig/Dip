@@ -46,6 +46,7 @@ public class StandardOrdersParser implements IOrdersDataSource {
 	public StandardOrdersParser(File ordersFile) {
 		this.ordersFile = ordersFile;
 		checkFile();
+		parseOrders();
 	}
 
 	public StandardOrdersParser(String ordersFileName) {
@@ -164,7 +165,8 @@ public class StandardOrdersParser implements IOrdersDataSource {
 				throw new IllegalArgumentException("Map file " + mapFileName + " cannot be accessed.");
 			}
 			catch (IOException ioe) {
-				throw new IllegalArgumentException ("Map file cannot be accessed.");
+				String mapFileName = ordersFile.getAbsolutePath();
+				throw new IllegalArgumentException ("Map file " + mapFileName + " cannot be accessed.");
 			}
 			
 		}
