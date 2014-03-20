@@ -41,7 +41,7 @@ public class GameTurn {
 		// First pass of orders: assign outcomes to mark badly formed or illegal orders.
 		// These can be ignored in subsequent processing.
 		for(Order order: TurnOrders.getOrders()) {
-			Outcome outcome =new Outcome(order); 
+			Outcome outcome = new Outcome(order); 
 			results.put(order, outcome);
 			ordersByStatus.get(outcome.getOrderState()).add(order);
 		}
@@ -49,13 +49,30 @@ public class GameTurn {
 		// Second pass: detect and mark failed support orders.
 		Set<Order> unresolvedSupportOrders = TurnOrders.getOrdersByType(OrderType.SUPPORT, ordersByStatus.get(OrderStatus.UNKNOWN));
 		for(Order order: unresolvedSupportOrders) {
-			Outcome outcome =new Outcome(order, ordersByStatus.get(OrderStatus.UNKNOWN)); 
-			
-			
-			
-			
+			Outcome outcome = new Outcome(order, ordersByStatus.get(OrderStatus.UNKNOWN)); 
+			ordersByStatus.get(OrderStatus.UNKNOWN).remove(order);
+			ordersByStatus.get(outcome.getOrderState()).add(order);
+			results.put(order, outcome);
 		}
 		
+		// Third pass: resolve simple move orders.
+		Set<Order> unresolvedMoveOrders = TurnOrders.getOrdersByType(OrderType.MOVE, ordersByStatus.get(OrderStatus.UNKNOWN));
+		while (!unresolvedMoveOrders.isEmpty()) {
+			int numUnresolvedMoveOrders = unresolvedMoveOrders.size();
+			for(Order order: unresolvedMoveOrders) {
+				Outcome outcome = new Outcome(order, ordersByStatus.get(OrderStatus.UNKNOWN));
+				if (outcome.getOrderState() != OrderStatus.UNKNOWN) {
+					ordersByStatus.get(OrderStatus.UNKNOWN).remove(order);
+					ordersByStatus.get(outcome.getOrderState()).add(order);
+					results.put(order, outcome);
+				}
+			}
+			unresolvedMoveOrders = TurnOrders.getOrdersByType(OrderType.SUPPORT, ordersByStatus.get(OrderStatus.UNKNOWN));
+			if (unresolvedMoveOrders.size() == numUnresolvedMoveOrders) {
+			// Can't make anymore progress in pass three	
+				break;
+			}
+		}
 	}
 	
 	void generateNewPosition() {
