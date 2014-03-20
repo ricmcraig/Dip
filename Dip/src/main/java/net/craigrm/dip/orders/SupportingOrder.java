@@ -23,4 +23,21 @@ public class SupportingOrder extends Order {
 		return supportedOrderType;
 	}
 	
+	public boolean supports(Order supportedOrder) {
+		
+		if (!this.getTarget().equals(supportedOrder.getTarget())) {
+			return false;
+		}
+		
+		if (!this.supportedUnit.equals(supportedOrder.getUnit())) {
+			return false;
+		}
+		
+		if (!this.supportedOrderType.equals(supportedOrder.getOrderType())) {
+			return false;
+		}
+		
+		return true;
+	}
+	
 }

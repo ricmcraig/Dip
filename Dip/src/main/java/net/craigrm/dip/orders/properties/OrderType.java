@@ -15,6 +15,13 @@ public enum OrderType {
 		this.type = type; 
 	}
 	
+	/**
+	 * 
+	 * @param orderType textual representation of the type of order (e.g. "Hold", "to", etc)
+	 * @return verified order type
+	 * @throws OrderTypeFormatException if the textual representation cannot be matched to a verified order type.   
+	 */ 
+
 	public static OrderType getOrderType (String orderType) {
 		String trimmedOrderType = orderType.trim();
 		

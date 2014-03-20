@@ -2,6 +2,8 @@ package net.craigrm.dip.scanners;
 
 import static org.junit.Assert.*;
 
+import java.io.File;
+
 import net.craigrm.dip.gameturn.IOrdersDataSource;
 import net.craigrm.dip.orders.OrdersDefinitionException;
 import net.craigrm.dip.state.TurnIdentifier;
@@ -46,7 +48,15 @@ public class OrdersParserTest {
 	private static final String ERROR_ORDERS_BAD_POWER = "./src/test/resources/orders/errorOrdersBadPower.dipord";
 
 	@Test
-	public void canParseSimpleOrder() {
+	public void canParseSimpleOrderFile() {
+		File ordersFile = new File(SIMPLE_ORDER);
+		IOrdersDataSource sop = new StandardOrdersParser(ordersFile);
+		assertEquals(SIMPLE_ORDER_TURN_ID, sop.getTurnID());
+		assertEquals(STANDARD_ORDERS_SIZE, sop.getOrders().size());
+	}
+
+	@Test
+	public void canParseSimpleOrderFileFromName() {
 		IOrdersDataSource sop = new StandardOrdersParser(SIMPLE_ORDER);
 		assertEquals(SIMPLE_ORDER_TURN_ID, sop.getTurnID());
 		assertEquals(STANDARD_ORDERS_SIZE, sop.getOrders().size());

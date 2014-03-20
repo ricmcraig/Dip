@@ -15,6 +15,12 @@ public enum UnitType {
 	private final String unitType;
 	private final List<Terrains> validTerrains;
 	
+	/**
+	 * 
+	 * @param type textual representation of the type of unit (e.g. "A", "F")
+	 * @return verified unit type
+	 * @throws UnitTypeFormatException if the textual representation cannot be matched to a verified unit type.   
+	 */ 
 	public static UnitType getType(String type) {
 		String trimmedType = type.trim();
 		
