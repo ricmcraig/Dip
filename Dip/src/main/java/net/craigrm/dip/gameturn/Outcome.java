@@ -1,7 +1,8 @@
 package net.craigrm.dip.gameturn;
 
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import net.craigrm.dip.map.ProvinceIdentifier;
@@ -213,28 +214,34 @@ public class Outcome {
 		// 1) a. Target is occupied by unit that is attempting to move
 
 		
-		// Get a collection of other move orders targeting the province 
+		// Get a collection of move orders targeting the province. 
 		ProvinceIdentifier targetProvince = moveOrder.getUnitPosition();
 		Set<Order> movingOrders = TurnOrders.getMovesTo(targetProvince);
-		movingOrders.remove(moveOrder);
 
-		// Get order for occupying unit (if any)
+		// Get order for occupying unit (if any).
 		Order occupyingOrder = TurnOrders.getOrderFor(targetProvince);
 		
-		// Target is empty and no competing unit
-		if (occupyingOrder == null && movingOrders.isEmpty()) {
+		// Target is empty and no competing unit.
+		if (occupyingOrder == null && movingOrders.size() == 1) {
 			return OrderStatus.SUCCESSFUL;
 		}
 		
-		// Calculate support for competing units
-		for(Order movingOrder: movingOrders) {
-			TurnOrders.getSupportingOrdersForOrder(movingOrder);
+		// Calculate highest support for units moving to the target province.
+		Map<OrderStatus, Set<Order>> ordersByStatus = new HashMap<OrderStatus, Set<Order>>();
+		Map<Order, Integer> supportStrengths = new HashMap<Order, Integer>();
+		Set<Order> successfulSupportOrders = TurnOrders.getOrdersByType(OrderType.SUPPORT, ordersByStatus.get(OrderStatus.SUCCESSFUL));
+		for(Order supportingOrder: successfulSupportOrders){
+			Order supportedOrder = TurnOrders.getOrderForSupportingOrder((SupportingOrder)supportingOrder);
+			if (movingOrders.contains(supportedOrder)){
+				if (supportStrengths.get(supportedOrder) == null) {
+					supportStrengths.put(supportedOrder, 1);
+				}
+				else {
+					supportStrengths.put(supportedOrder, supportStrengths.get(supportedOrder) + 1);
+				}
+			}
 		}
 		
-		
-		if (occupyingOrder == null && movingOrders.isEmpty()) {
-			return OrderStatus.SUCCESSFUL;
-		}
 		
 		return OrderStatus.UNKNOWN;
 		

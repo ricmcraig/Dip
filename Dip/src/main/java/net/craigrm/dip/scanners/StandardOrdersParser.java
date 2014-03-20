@@ -46,6 +46,7 @@ public class StandardOrdersParser implements IOrdersDataSource {
 	public StandardOrdersParser(File ordersFile) {
 		this.ordersFile = ordersFile;
 		checkFile();
+		parseOrders();
 	}
 
 	public StandardOrdersParser(String ordersFileName) {
@@ -164,7 +165,8 @@ public class StandardOrdersParser implements IOrdersDataSource {
 				throw new IllegalArgumentException("Map file " + mapFileName + " cannot be accessed.");
 			}
 			catch (IOException ioe) {
-				throw new IllegalArgumentException ("Map file cannot be accessed.");
+				String mapFileName = ordersFile.getAbsolutePath();
+				throw new IllegalArgumentException ("Map file " + mapFileName + " cannot be accessed.");
 			}
 			
 		}
@@ -250,6 +252,7 @@ public class StandardOrdersParser implements IOrdersDataSource {
 				id = new ProvinceIdentifier(adjustmentScanner.next());
 				unit = new Unit(id, currentPower, unitType);
 				adjustment = new Adjustment(adjustmentText, Adjustment.WELL_FORMED, adjustmentType, unit);
+				adjustmentScanner.close();
 			}
 			catch (IllegalArgumentException iae) {
 				//IllegalArgumentException indicates that the adjustment is not well-formed.
@@ -266,6 +269,7 @@ public class StandardOrdersParser implements IOrdersDataSource {
 			finally {
 				//Save the adjustment, whether good or bad.
 				adjustments.add(adjustment);
+				adjustmentListScanner.close();
 			}
 		}
 		return adjustments;
@@ -297,6 +301,11 @@ public class StandardOrdersParser implements IOrdersDataSource {
 		Unit supportedUnit = null;
 		
 		try {
+			// FIXME: This is bugged!!
+			// UnitType.getType and ProvinceIdentifier can both throw IllegalArgumentExceptions which results
+			// in a new SupportingOrder being created when caught. But we don't know at this point if we need
+			// an Order or a SupportingOrder.
+			
 			unitType = UnitType.getType(lineScanner.next());
 			id = new ProvinceIdentifier(lineScanner.next());
 			unit = new Unit(id, currentPower, unitType);
@@ -339,6 +348,9 @@ public class StandardOrdersParser implements IOrdersDataSource {
 			//Continue getting the next order.
 			order = new SupportingOrder(line, Order.NOT_WELL_FORMED, unit, orderType, supportedUnit, supportedOrderType, destination);
 			return order;
+		}
+		finally {
+			lineScanner.close();
 		}
 
 	}
