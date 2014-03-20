@@ -119,17 +119,22 @@ public class StandardPositionParser implements IPositionDataSource{
 				//Handle position and control lines
 				lineScanner = new Scanner(line);
 				lineScanner.useDelimiter(",");
-				if (line.matches(POSITION_LINE_REGEX)) {
-					ProvinceIdentifier id = new ProvinceIdentifier(lineScanner.next());
-					Powers unitOwner = Powers.getPowerFromID(lineScanner.next());
-					UnitType unitType = UnitType.getType(lineScanner.next());
-					units.add(new Unit(id, unitOwner, unitType));
-				} else if (line.matches(CONTROL_LINE_REGEX)) {
-					ProvinceIdentifier id = new ProvinceIdentifier(lineScanner.next());
-					Powers controller = Powers.getPowerFromID(lineScanner.next());
-					control.add(new Control(id, controller));
-				} else {
-					throw new PositionDefinitionException(posFile.getAbsolutePath(), lineNo, line, POSITION_LINE_REGEX + " or " + CONTROL_LINE_REGEX );
+				try {
+					if (line.matches(POSITION_LINE_REGEX)) {
+						ProvinceIdentifier id = new ProvinceIdentifier(lineScanner.next());
+						Powers unitOwner = Powers.getPowerFromID(lineScanner.next());
+						UnitType unitType = UnitType.getType(lineScanner.next());
+						units.add(new Unit(id, unitOwner, unitType));
+					} else if (line.matches(CONTROL_LINE_REGEX)) {
+						ProvinceIdentifier id = new ProvinceIdentifier(lineScanner.next());
+						Powers controller = Powers.getPowerFromID(lineScanner.next());
+						control.add(new Control(id, controller));
+					} else {
+						throw new PositionDefinitionException(posFile.getAbsolutePath(), lineNo, line, POSITION_LINE_REGEX + " or " + CONTROL_LINE_REGEX );
+					}
+				}
+				finally{
+					lineScanner.close();
 				}
 			}
 			

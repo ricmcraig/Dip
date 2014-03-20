@@ -61,7 +61,17 @@ public class StandardMapper implements IMapDataSource{
 		}
 		catch (FileNotFoundException fnfe) {
 			throw new IllegalArgumentException("Position file " + mapFile.getAbsolutePath() + " cannot be found.");
-		} 
+		}
+		finally {
+			try {
+				if (fr != null) {
+					fr.close();
+				}
+			}
+			catch(IOException ioe) {
+				//TODO Log exception. Continue anyway: we read the file successfully
+			}
+		}
 		
 		BufferedReader br = new BufferedReader(fr);
 		// First pass: read the file and create set of provisional provinces and capture list of sea province names
@@ -70,64 +80,68 @@ public class StandardMapper implements IMapDataSource{
 				lineNo++;
 				lineScanner = new Scanner(line);
 				lineScanner.useDelimiter(",");
-				
-				if (!lineScanner.hasNext()) {
-					throw new NoSuchMapElementException("Identifier");
-				}
-				ProvinceIdentifier id = new ProvinceIdentifier(lineScanner.next());
-				
-				if (!lineScanner.hasNext()) {
-					throw new NoSuchMapElementException("Terrain");
-				}
-				Terrains terrain = Terrains.getTerrain(lineScanner.next());
-				
-				if (!lineScanner.hasNext()) {
-					throw new NoSuchMapElementException("Suppply");
-				}
-				Supply supply = Supply.getSupply(lineScanner.next());
-				
-				if (!lineScanner.hasNext()) {
-					throw new NoSuchMapElementException("Power");
-				}
-				Owner owner = new Owner(lineScanner.next());
-				
-				if (!lineScanner.hasNext()) {
-					throw new NoSuchMapElementException("Full Name");
-				}
-				String fullName = lineScanner.next();
-				
-				String aliasesString = getIdentifierList(lineScanner);
-				if (aliasesString == null) {
-					throw new NoSuchMapElementException("Aliases");
-				}
-				String[] aliaseIDs = new BracketedCSVScanner(aliasesString).getElements();
-				Set<ProvinceIdentifier> aliases = new HashSet<ProvinceIdentifier>(); 
-				for(String alias:aliaseIDs) {
-					ProvinceIdentifier aliasID = new ProvinceIdentifier(alias);
-					if (!aliases.add(aliasID)) {
-						throw new DuplicateProvinceIdentifierException(aliasID.getID());
+				try {
+					if (!lineScanner.hasNext()) {
+						throw new NoSuchMapElementException("Identifier");
+					}
+					ProvinceIdentifier id = new ProvinceIdentifier(lineScanner.next());
+					
+					if (!lineScanner.hasNext()) {
+						throw new NoSuchMapElementException("Terrain");
+					}
+					Terrains terrain = Terrains.getTerrain(lineScanner.next());
+					
+					if (!lineScanner.hasNext()) {
+						throw new NoSuchMapElementException("Suppply");
+					}
+					Supply supply = Supply.getSupply(lineScanner.next());
+					
+					if (!lineScanner.hasNext()) {
+						throw new NoSuchMapElementException("Power");
+					}
+					Owner owner = new Owner(lineScanner.next());
+					
+					if (!lineScanner.hasNext()) {
+						throw new NoSuchMapElementException("Full Name");
+					}
+					String fullName = lineScanner.next();
+					
+					String aliasesString = getIdentifierList(lineScanner);
+					if (aliasesString == null) {
+						throw new NoSuchMapElementException("Aliases");
+					}
+					String[] aliaseIDs = new BracketedCSVScanner(aliasesString).getElements();
+					Set<ProvinceIdentifier> aliases = new HashSet<ProvinceIdentifier>(); 
+					for(String alias:aliaseIDs) {
+						ProvinceIdentifier aliasID = new ProvinceIdentifier(alias);
+						if (!aliases.add(aliasID)) {
+							throw new DuplicateProvinceIdentifierException(aliasID.getID());
+						}
+					}
+					
+					String neighboursString = getIdentifierList(lineScanner);
+					if (neighboursString == null) {
+						throw new NoSuchMapElementException("Neighbours");
+					}
+					String[] neighbourIDs = new BracketedCSVScanner(neighboursString).getElements();
+					Set<ProvinceIdentifier> neighbours =  new HashSet<ProvinceIdentifier>();
+					for(String neighbour:neighbourIDs) {
+						ProvinceIdentifier neighbourID = new ProvinceIdentifier(neighbour);
+						if (!neighbours.add(neighbourID)) {
+							throw new DuplicateProvinceIdentifierException(neighbourID.getID());
+						}
+					}
+					
+					if (!provisionalProvinces.add(new Province(id, terrain, supply, owner, fullName, aliases, neighbours))) {
+						throw new DuplicateProvinceIdentifierException(id.getID());
+					}
+	
+					if (terrain == Terrains.SEA) {
+						seaProvincesIds.add(id);
 					}
 				}
-				
-				String neighboursString = getIdentifierList(lineScanner);
-				if (neighboursString == null) {
-					throw new NoSuchMapElementException("Neighbours");
-				}
-				String[] neighbourIDs = new BracketedCSVScanner(neighboursString).getElements();
-				Set<ProvinceIdentifier> neighbours =  new HashSet<ProvinceIdentifier>();
-				for(String neighbour:neighbourIDs) {
-					ProvinceIdentifier neighbourID = new ProvinceIdentifier(neighbour);
-					if (!neighbours.add(neighbourID)) {
-						throw new DuplicateProvinceIdentifierException(neighbourID.getID());
-					}
-				}
-				
-				if (!provisionalProvinces.add(new Province(id, terrain, supply, owner, fullName, aliases, neighbours))) {
-					throw new DuplicateProvinceIdentifierException(id.getID());
-				}
-
-				if (terrain == Terrains.SEA) {
-					seaProvincesIds.add(id);
+				finally {
+					lineScanner.close();
 				}
 			}
 		}
