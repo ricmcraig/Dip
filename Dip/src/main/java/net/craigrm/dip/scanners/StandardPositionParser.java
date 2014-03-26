@@ -45,8 +45,8 @@ public class StandardPositionParser implements IPositionDataSource{
 		if (posFileName == null) {
 			throw new IllegalArgumentException("Position file name not specified.");
 		}
-		File mapFile = new File(posFileName);
-		this.posFile = mapFile;
+		File posFile = new File(posFileName);
+		this.posFile = posFile;
 		checkFile();
 	}
 	
@@ -111,12 +111,12 @@ public class StandardPositionParser implements IPositionDataSource{
 					continue;
 				}
 				
-				//Should be an position or control line: check we've got a turn
+				// Should be a position or control line: check we've got a turn
 				if (turnID == null) {
 					throw new PositionDefinitionException(posFile.getAbsolutePath(), lineNo, line, "a turn designation before this point");
 				}
 				
-				//Handle position and control lines
+				// Handle position and control lines
 				lineScanner = new Scanner(line);
 				lineScanner.useDelimiter(",");
 				try {
