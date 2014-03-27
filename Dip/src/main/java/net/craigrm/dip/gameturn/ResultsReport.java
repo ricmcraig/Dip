@@ -18,6 +18,15 @@ class ResultsReport {
 	private TurnIdentifier turnID;
 	private Map<Powers,Map<String,Result>> results = Collections.emptyMap();
 	
+	ResultsReport (IOrdersDataSource ods, IPositionDataSource pds) {
+		// Generate a set of result holders from the union of the orders and the position data.
+		// We want to report a result for every order (even for orders which cannot be parsed) 
+		// and for units that had no explicit orders.
+		
+		//TODO This may not work as duplicate orders should appear in the results, but may be removed when added to the orders set.
+		ods.getOrders();
+	}
+	
 	public State getResultState() {
 		return resultState;
 	}
