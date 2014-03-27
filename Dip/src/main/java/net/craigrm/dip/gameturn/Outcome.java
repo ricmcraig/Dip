@@ -21,6 +21,7 @@ public class Outcome {
 		//Check for badly formed order
 		if (!o.isWellFormed()) {
 			 orderState = OrderStatus.BADLYFORMED;
+			 detail = "Bad order format.";
 			return;
 		}
 		
