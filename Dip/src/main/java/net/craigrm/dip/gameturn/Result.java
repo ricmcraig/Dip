@@ -1,6 +1,6 @@
 package net.craigrm.dip.gameturn;
 
-class Result {
+public class Result {
 	
 	enum OrderOrigin {
 		PLAYER,
